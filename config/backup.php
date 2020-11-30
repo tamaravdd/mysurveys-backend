@@ -136,11 +136,11 @@ return [
         'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
 
         'mail' => [
-            'to' => 'admin@mysurveys.scifriends.edu',
+            'to' => 'admin@mysurveys.santafe.edu',
 
             'from' => [
-                'address' => env('MAIL_FROM_ADDRESS', 'admin@mysurveys.scifriends.edu'),
-                'name' => env('MAIL_FROM_NAME', 'Websurveys Admin'),
+                'address' => env('MAIL_FROM_ADDRESS', 'admin@mysurveys.santafe.edu'),
+                'name' => env('MAIL_FROM_NAME', 'MySurveys Admin'),
             ],
         ],
 

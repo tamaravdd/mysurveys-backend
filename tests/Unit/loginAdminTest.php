@@ -15,16 +15,15 @@ class loginAdminTest extends TestCase
     public function testloginAdmin()
     {
         $this->assertTrue(true);
-           $response2 = $this->postJson('api/auth/login', [
-            'email' => 'admin@scifriends.edu',
+        $response2 = $this->postJson('api/auth/login', [
+            'email' => 'admin@mysurveys.santafe.edu',
             'password' => 'Testpass12!',
-                ]
-        );
+        ]);
 
         $response2
-                ->assertStatus(200)
-                ->assertJson([
-                    'access_token' => true,
-        ]);
+            ->assertStatus(200)
+            ->assertJson([
+                'access_token' => true,
+            ]);
     }
 }

@@ -320,7 +320,7 @@ class ProjectsTest extends TestCase
         //Invitees: accept the invite for some of the participants
         //some of those participants accept the project
         //        ->generate the project invite stuff incl. URL and handle the project link click types
-        //        simulate a unipark survey and return to scifriends, filling in necesary DB values
+        //        simulate a unipark survey and return to MySurveys, filling in necesary DB values
         //        study finish time entered, amount to pay entered in DB
         //RESEARCHER // ADMIN
         //        approves the payouts - projectparticipants amoutn to pay entered, validated = timestamp
