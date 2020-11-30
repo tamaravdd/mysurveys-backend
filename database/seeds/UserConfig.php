@@ -86,6 +86,8 @@ class UserConfig extends Seeder
         $participantActual->save();
 
         DB::transaction(function () {
+            $DEFAULT_PASSWORD = \config('constants.APP_DEFAULT_PASSWORD');
+
             $participant = User::create([
                 'id' => 4,
                 'username' => 'phil@dukecitydigital.com',
