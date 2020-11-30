@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Validator;
-use App\Library\Utilities;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\BaseController;
 use App\Researcher;
 use App\Project;
+use App\Helpers\Utilities;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 

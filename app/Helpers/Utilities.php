@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Library;
+namespace App\Helpers;
 
 use App\Researcher;
 
