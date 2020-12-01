@@ -10,5 +10,6 @@ configure the .env file and database
 set the default password in the .env file
 run 'php artisan migrate --seed'
 
-//TODO
-link full project documents
+# Full documentation
+
+https://docs.google.com/document/d/1IhZD4RmyarY-Kn3iSRXIRboweJbqwUJOCRHqaf_P_bM/edit?usp=sharing
