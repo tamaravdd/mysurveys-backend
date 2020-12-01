@@ -17,7 +17,7 @@ use App\EmailChanges;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\PasswordResetSuccess;
 use App\Participant;
-use App\Library\Utilities;
+use App\Helpers\Utilities;
 
 class RegisterController extends BaseController
 {
