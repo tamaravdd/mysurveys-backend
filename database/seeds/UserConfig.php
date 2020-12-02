@@ -21,6 +21,10 @@ class UserConfig extends Seeder
     {
         //        create admin
 
+        $makeParticipants = 3;
+
+        $should_create_participants  = true;
+
         $DEFAULT_PASSWORD = \config('constants.APP_DEFAULT_PASSWORD');
 
         $admin = User::create([
@@ -152,8 +156,7 @@ class UserConfig extends Seeder
 
         //pause mock participants
 
-        $makeParticipants = 245;
-        if (0) :
+        if ($should_create_participants) :
             for ($i = 0; $i <= $makeParticipants; $i++) :
 
                 $firstn = $faker->firstName;

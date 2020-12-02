@@ -11,14 +11,16 @@ use App\Researcher;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
-class ProjectController extends BaseController {
+class ProjectController extends BaseController
+{
 
     /**
      * Display a listing of the Project.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
 
         $id = $request->user()->id;
         //        TODO filter by user id
@@ -32,7 +34,8 @@ class ProjectController extends BaseController {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         $input = $request->all();
         $validator = Validator::make($input, ['project_title' => 'required|string']);
@@ -41,7 +44,7 @@ class ProjectController extends BaseController {
         }
         $input['creator_userid'] = Auth::id();
         $p = Project::create($input);
-//        $p->researchers()->sync([Auth::id()]);TODO relate res to project
+        //        $p->researchers()->sync([Auth::id()]);TODO relate res to project
         return $this->sendResponse(new ProjectResource($p), 'Project created successfully.');
     }
 
@@ -51,7 +54,8 @@ class ProjectController extends BaseController {
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
 
         $project = Project::find($id);
         if (is_null($project)) {
@@ -67,7 +71,8 @@ class ProjectController extends BaseController {
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
 
         $input = $request->all();
         $project = Project::find($id);
@@ -87,9 +92,9 @@ class ProjectController extends BaseController {
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         Project::findOrFail($id)->delete();
         return $this->sendResponse([], 'Project deleted');
     }
-
 }

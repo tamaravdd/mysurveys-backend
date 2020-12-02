@@ -41,11 +41,15 @@ class ParticipantController extends BaseController
             return $this->sendError('Missing project ID');
         }
 
+
         $forms = $validator->valid()['categoryForm'];
+
         $select_paypal_status_ok = $request['paypal_status_ok'] == true;
         $eligible_seed = $request['eligible_seed'] == true;
         $eligible_peers = $request['eligible_peers'] == true;
-        $participants = Participant::whereHas('user', function ($query) use ($forms, $select_paypal_status_ok, $eligible_seed, $eligible_peers) {
+
+
+        $participants = Participant::with(['friends'])->whereHas('user', function ($query) use ($forms, $select_paypal_status_ok, $eligible_seed, $eligible_peers) {
             foreach ($forms as $key => $f) {
                 $query->where($f['name'], $f['operator'], $f['value']);
             }

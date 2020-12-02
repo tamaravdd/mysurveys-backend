@@ -3,20 +3,14 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-
-//use Database
-//
-//use DatabaseMigrations { runDatabaseMigrations as runMigration; }
-
+use WithoutMiddleware;
 
 class InviteResearcherTest extends TestCase
 {
 
-
-
     /**
      * A basic feature test example.
-     * @group 1
+     * @group 003
      * @return void
      */
     public function testInviteResearcher()
@@ -25,18 +19,32 @@ class InviteResearcherTest extends TestCase
         $this->faker = \Faker\Factory::create();
 
         $admin = \App\User::find(1);
-        $this->actingAs($admin, 'api');
+
+        // echo $admin->email;
         //fake researcher info
         $name = $this->faker->firstName;
         $email = $this->faker->email;
+
+        // $user = $this->postJson('api/auth/login', [
+        //     'email' => 'admin@mysurveys.santafe.edu',
+        //     'password' => 'Mc{&V=HQ@T<z4YaL'
+        // ]);
+
+        // $user->dump();
+
+        // $token = $user->token;
+        $this->withoutMiddleware();
+        // $this->actingAs($admin, 'web');
+        // $this->actingAs(factory('App\User')->create());
         $response = $this->postJson('api/invite_researcher', [
             'nickname' => $name,
             'email' => $email
         ]);
+
         $response
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJson([
-                'user' => true,
+                'data' => true,
             ]);
 
         $researcher = \App\User::where("email", $email)->first();
@@ -47,6 +55,8 @@ class InviteResearcherTest extends TestCase
         $response2 = $this->postJson('api/auth/check_verification_code', [
             'code' => $r_code
         ]);
+        $response2->dump();
+
 
         $response2
             ->assertStatus(200)

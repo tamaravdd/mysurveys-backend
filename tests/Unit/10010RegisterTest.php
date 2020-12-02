@@ -9,36 +9,38 @@ use Tests\TestCase;
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Log;
 
+// namespace Tests\Unit;
+
+// use PHPUnit\Framework\TestCase;
+
+
+
+
 class RegisterTest extends TestCase
 {
-    //   public function setUp() {
-    //    parent::setUp();
-    // Your code here
-    //}
 
     /**
      * Test registration
-     * @group 0
+     * @group 001
      * @return void
      */
     public function testRegister()
     {
         $faker = \Faker\Factory::create();
-        //        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $email = $faker->email;
         $pass = "Testpass12!";
 
         $response = $this->postJson('api/auth/register', ['email' => $email, 'password' => $pass]);
+
         $response->assertStatus(201)->assertJson([
             'user' => true,
         ]);
 
-
-        //
         $error_response = $this->postJson('api/auth/login', [
-            'email' => 'researcher@*TEST*mysurveys.santafe.edu',
-            'password' => 'Testpass12!2'
+            'email' => 'researchefar@*TEST*mysurveys.santafe.edu',
+            'password' => 'Mc{&V=HQ@T<z4YaL11'
         ]);
 
         $error_response
@@ -47,7 +49,7 @@ class RegisterTest extends TestCase
 
     /**
      * Test registration with qualification form
-     * @group 0
+     * @group 001
      * @return void
      */
     public function testRegisterWithQualificationForm()
@@ -75,25 +77,6 @@ class RegisterTest extends TestCase
             'user' => true,
         ]);
 
-        $response2 = $this->postJson('api/auth/login', [
-            'email' => $email,
-            'password' => $pass,
-        ]);
-
-        $response2
-            ->assertStatus(200)
-            ->assertJson([
-                'access_token' => true,
-            ]);
-    }
-
-    /**
-     * Test login
-     * @group 9
-     * @return void
-     */
-    public function testLogin()
-    {
         $response2 = $this->postJson('api/auth/login', [
             'email' => $email,
             'password' => $pass,

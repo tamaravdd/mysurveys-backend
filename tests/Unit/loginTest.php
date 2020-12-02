@@ -1,25 +1,31 @@
 <?php
 
-namespace Tests\Unit;
+// namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
+use CreatesApplication;
+use DatabaseMigrations;
 
-
-class loginAdminTest extends TestCase
+class loginTest extends TestCase
 {
+
     /**
-     * testLoginAdmin
-     *@group 004
+     * testLogin
+     *@group 002
      * @return void
      */
     public function testloginAdmin()
     {
-        $this->assertTrue(true);
+        $this->withoutExceptionHandling();
+
         $ad = \App\User::find(1);
+
+
         $this->actingAs($ad, 'api');
         $response2 = $this->postJson('api/auth/login', [
             'email' => 'admin@mysurveys.santafe.edu',
-            'password' => 'Testpass12!',
+            'password' => 'Mc{&V=HQ@T<z4YaL',
         ]);
 
         $response2

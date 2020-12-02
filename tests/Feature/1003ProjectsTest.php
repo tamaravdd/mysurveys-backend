@@ -13,7 +13,7 @@ class ProjectsTest extends TestCase
 
     /**
      * A basic unit test example.
-     * @group 3
+     * @group 005
      * @return void
      */
     public function testProjectInit()
@@ -22,26 +22,245 @@ class ProjectsTest extends TestCase
         $faker = \Faker\Factory::create();
 
         $user = \App\User::find(2);
+        $this->withoutMiddleware();
 
         $this->actingAs($user, 'api');
         $project_response = $this->postJson('api/projects', [
             'project_title' => $faker->company,
             'description' => $faker->bs,
-            //            'exp_payout' => 20,
-            //            'quota' => 455,
-            //            'max_payout' => 25,
+            'exp_payout' => 20,
+            'quota' => 455,
+            'max_payout' => 25,
             'link_method' => 'Direct',
         ]);
-        $project_response->dump()->assertStatus(200);
+        // $project_response->dump()->assertStatus(200);
+
+        $_SELECTION['project_id'] = $project_response['data']['id'];
+
+        $participant_role = \Spatie\Permission\Models\Role::where("name", "participant")->first();
+
+        //make some participant users
+        $participants_users = factory(\App\User::class, 25)->create();
+
+        // $participants_users->roles()->attach($participant_role);
+
+        $participant_role->users()->attach($participants_users);
+
+        foreach ($participants_users as $p) {
+
+            $p->assignRole('participant');
+            $new = \App\Participant::checkIfNew($p->user_id);
+            var_dump($new);
+            // var_dump($p->id);
+            if (!$new) {
+                $last = $faker->lastName;
+
+                $qualification_parents = rand(0, 1);
+                $qualification_friends = rand(0, 5);
+                $qualification_gm = rand(0, 5);
+                $qualification_vac = rand(0, 5);
+                $qualification_us = rand(0, 1);
+
+                $paypal_id_status = rand(0, 1) ? 'Ok' : 'New';
+                $n = new \App\Participant();
+                $data =   [
+                    'user_id' => $p->id,
+                    'first_name' => '$user->name',
+                    'family_name' => $last,
+                    'paypal_id_status' => $paypal_id_status,
+                    'paypal_id' => 0,
+                    "qualification_parents" => $qualification_parents,
+                    "qualification_friends" => $qualification_friends,
+                    "is_seed" => 1,
+                    "qualification_gm" => $qualification_gm,
+                    "qualification_vac" => $qualification_vac,
+                    "qualification_us" => $qualification_us,
+                ];
+                $n->fill($data);
+                $n->save();
+            }
+            // $p->assignRole('participant');
+
+            // $participant_role->users()->attach($friends_users);
+
+
+
+
+
+
+
+            // $last = $faker->lastName;
+
+            // $qualification_parents = rand(0, 1);
+            // $qualification_friends = rand(0, 5);
+            // $qualification_gm = rand(0, 5);
+            // $qualification_vac = rand(0, 5);
+            // $qualification_us = rand(0, 1);
+
+            // $paypal_id_status = rand(0, 1) ? 'Ok' : '0';
+
+            // $new = \App\Participant::checkIfNew($p->user_id);
+            // $n = new \App\Participant();
+            // $data =   [
+            //     'user_id' => $p->id,
+            //     'first_name' => $user->name,
+            //     'family_name' => $last,
+            //     'paypal_id_status' => $paypal_id_status,
+            //     'paypal_id' => 0,
+            //     "qualification_parents" => $qualification_parents,
+            //     "qualification_friends" => $qualification_friends,
+            //     "is_seed" => 1,
+            //     "qualification_gm" => $qualification_gm,
+            //     "qualification_vac" => $qualification_vac,
+            //     "qualification_us" => $qualification_us,
+            // ];
+            // $n->fill($data);
+            // $n->save();
+            // var_dump($n);
+
+
+            // if ($new !== false) {
+            //     $n = new \App\Participant();
+            //     $data =   [
+            //         'user_id' => $p->id,
+            //         'first_name' => $user->name,
+            //         'family_name' => $last,
+            //         'paypal_id_status' => $paypal_id_status,
+            //         'paypal_id' => 0,
+            //         "qualification_parents" => $qualification_parents,
+            //         "qualification_friends" => $qualification_friends,
+            //         "is_seed" => 1,
+            //         "qualification_gm" => $qualification_gm,
+            //         "qualification_vac" => $qualification_vac,
+            //         "qualification_us" => $qualification_us,
+            //     ];
+            //     $n->fill($data);
+            //     $n->save();
+
+
+            // }
+
+
+            //     $friends_users = factory(\App\User::class, 2)->create();
+
+            //     $participant_role->users()->attach($friends_users);
+
+
+            //     foreach ($friends_users as $fa) {
+
+            //         $last2 = $faker->lastName;
+
+            //         $friends_parts = factory(\App\Participant::class)->create(
+            //             [
+            //                 'user_id' => $fa->id,
+            //                 'first_name' => $fa->name,
+            //                 'family_name' => $last2,
+            //                 'paypal_id_status' => $paypal_id_status,
+            //                 'paypal_id' => 0,
+            //                 "is_seed" => 0,
+            //                 "seed_id" => $p->id
+            //             ]
+            //         );
+            //     }
+            // } else {
+            //     echo 'participant exists';
+            // }
+        }
+        $friends_users = factory(\App\User::class, 4)->create();
+
+        foreach ($friends_users as $fa) {
+            $fa->assignRole('participant');
+            $new = \App\Participant::checkIfNew($fa->user_id);
+            if (!$new) {
+                $last = $faker->lastName;
+
+                $qualification_parents = rand(0, 1);
+                $qualification_friends = rand(0, 5);
+                $qualification_gm = rand(0, 5);
+                $qualification_vac = rand(0, 5);
+                $qualification_us = rand(0, 1);
+
+                $paypal_id_status = rand(0, 1) ? 'Ok' : 'New';
+                $ddata =   [
+                    'user_id' => $fa->id,
+                    'first_name' => '$user->name',
+                    'family_name' => $last,
+                    'paypal_id_status' => $paypal_id_status,
+                    'paypal_id' => 0,
+                    "qualification_parents" => $qualification_parents,
+                    "qualification_friends" => $qualification_friends,
+                    "is_seed" => null,
+                    "qualification_gm" => $qualification_gm,
+                    "qualification_vac" => $qualification_vac,
+                    "qualification_us" => $qualification_us,
+                ];
+
+
+
+                $nn = new \App\Participant();
+
+                $nn->fill($ddata);
+                $nn->save();
+            }
+
+            // $last2 = $faker->lastName;
+
+            // $friends_parts = factory(\App\Participant::class)->create(
+            //     [
+            //         'user_id' => $fa->id,
+            //         'first_name' => $fa->name,
+            //         'family_name' => $last2,
+            //         'paypal_id_status' => $paypal_id_status,
+            //         'paypal_id' => 0,
+            //         "is_seed" => 0,
+            //         "seed_id" => $p->id
+            //     ]
+            // );
+            $_SELECTION = [
+                "categoryForm" => [],
+                "eligible_peers" => "",
+                "eligible_seed" => true,
+                "paypal_status_ok" => true,
+                "project_id" => null,
+            ];
+            $_SELECTION['project_id'] = $project_response['data']['id'];
+            $selection_response = $this->postJson('api/get_advanced_selection', [
+                'categoryForm' => $_SELECTION['categoryForm'],
+                'eligible_peers' => $_SELECTION['eligible_peers'],
+                'eligible_seed' => $_SELECTION['eligible_seed'],
+                'paypal_status_ok' => $_SELECTION['paypal_status_ok'],
+                'project_id' => $_SELECTION['project_id'],
+            ]);
+
+            $selection_response->dump();
+
+            // $selection_users = json_decode($selection_response->getContent())->data;
+
+            // var_dump($selection_users);
+
+            $selection_ids = [];
+            // foreach ($selection_users as $su) {
+            //     $selection_ids[] = $su->user_id;
+            // }
+
+            // echo 'count su ids', count($selection_ids);
+
+            // $create_selection = $this->postJson('api/create_selection', [
+            //     'users' => $selection_ids,
+            //     'project_id' => $_SELECTION['project_id'],
+            // ]);
+        }
     }
 
     /**
      * A basic unit test example.
-     * @group 4
+     * @group 006
      * @return void
      */
     public function testProjectCycle()
     {
+
+
 
         /**
          * Config
@@ -76,10 +295,11 @@ class ProjectsTest extends TestCase
         $user = factory(\App\User::class)->create();
         $user->assignRole($role);
         //researcher actual
-        $r = factory(\App\Researcher::class)->create([
-            'user_id' => $user->id,
-        ]);
+        // $r = factory(\App\Researcher::class)->create([
+        //     'user_id' => $user->id,
+        // ]);
 
+        $r = \App\User::find(2);
 
         /**
          * Create Project - 200
@@ -88,27 +308,42 @@ class ProjectsTest extends TestCase
         $start = '2020-11-20 20:24:00';
         $end = '2020-12-20 20:24:00';
 
+        // $this->withoutMiddleware();
 
-        var_dump($r->id, $user->id);
+        // var_dump($r->id, $user->id);
+        // $this->actingAs($r, 'api');
+        // $project_response = $this->postJson('api/projects', [
+        //     'project_title' => $faker->company,
+        //     'description' => $faker->bs,
+        //     'exp_payout' => 20,
+        //     'quota' => $_QUOTA,
+        //     'max_payout' => 25,
+        //     'payout_type' => 'fixed',
+        //     'link_method' => 'Direct',
+        //     'link' => 'wwwtest.unipark.edu/survey676',
+        //     'desired_sample_size' => 500,
+        //     'desired_num_invitations' => 600,
+        //     'defaultstart' => $start,
+        //     'defaultend' => $end,
+        //     'responsible_person' => 'responsible_test_person@rptest.test'
+        // ]);
+        $faker = \Faker\Factory::create();
+
+        $user = \App\User::find(2);
+        $this->withoutMiddleware();
+
         $this->actingAs($user, 'api');
         $project_response = $this->postJson('api/projects', [
             'project_title' => $faker->company,
             'description' => $faker->bs,
             'exp_payout' => 20,
-            'quota' => $_QUOTA,
+            'quota' => 455,
             'max_payout' => 25,
-            'payout_type' => 'fixed',
             'link_method' => 'Direct',
-            'link' => 'wwwtest.unipark.edu/survey676',
-            'desired_sample_size' => 500,
-            'desired_num_invitations' => 600,
-            'defaultstart' => $start,
-            'defaultend' => $end,
-            'responsible_person' => 'responsible_test_person@rptest.test'
         ]);
-
         $project_response->dump()->assertStatus(200);
-        exit();
+
+        // exit();
 
 
         /**
@@ -139,12 +374,12 @@ class ProjectsTest extends TestCase
 
             $paypal_id_status = rand(0, 1) ? 'Ok' : '0';
 
-            $new = \App\Participant::checkIfNew($p->id);
+            $new = \App\Participant::checkIfNew($p->user_id);
             //create seeds
             if ($new !== false) {
                 $parts = factory(\App\Participant::class)->create(
                     [
-                        'id' => $p->id,
+                        'user_id' => $p->id,
                         'first_name' => $user->name,
                         'family_name' => $last,
                         'paypal_id_status' => $paypal_id_status,
@@ -171,7 +406,7 @@ class ProjectsTest extends TestCase
 
                     $friends_parts = factory(\App\Participant::class)->create(
                         [
-                            'id' => $fa->id,
+                            'user_id' => $fa->id,
                             'first_name' => $fa->name,
                             'family_name' => $last2,
                             'paypal_id_status' => $paypal_id_status,

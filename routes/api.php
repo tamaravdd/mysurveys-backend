@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
 /**
  * Registration and Authentication
  *
@@ -14,7 +15,7 @@ Route::group([
     'middleware' => 'api',
     // 'namespace' => 'App\Http\Controllers',
     'prefix' => 'auth'
-        ], function ($router) {
+], function ($router) {
     Route::post('login', 'AuthController@login');
     Route::post('register', 'RegisterController@register');
     Route::post('resend_verification_email', 'RegisterController@resend_verification_email');
@@ -67,7 +68,7 @@ Route::post('get_advanced_selection', 'ParticipantController@get_advanced_select
  * ONLY Administrator
  *
  */
-Route::group(['middleware' => ['role:administrator']], function () {
+Route::group(['middleware' => ['role:administrator'],    'middleware' => 'api'], function () {
     Route::post('invite_researcher', 'AdminController@invite_researcher');
     Route::resource('settings', 'SettingsController');
     Route::post('backup', 'SettingsController@backup');
@@ -102,9 +103,7 @@ Route::group(['middleware' => ['role:participant', 'verified']], function () {
 Route::group(['middleware' => ['role:administrator|researcher|participant']], function () {
     Route::resource('projects', 'ProjectController');
     Route::get('motd', 'ProfileController@motd');
-
 });
 //verified all
 Route::group(['middleware' => ['role:administrator|researcher|participant', 'verified']], function () {
-
 });

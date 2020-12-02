@@ -121,7 +121,8 @@ class RegisterController extends BaseController
             return response()->json($errors, 400);
         }
         $user_info = $validator->valid();
-
+        // echo 'regoster';
+        // exit;
         if ($newuser = $this->create_user($user_info, 'participant')) {
 
             $part = $this->create_participant($newuser->id);
