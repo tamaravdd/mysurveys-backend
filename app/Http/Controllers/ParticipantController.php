@@ -48,8 +48,11 @@ class ParticipantController extends BaseController
         $eligible_seed = $request['eligible_seed'] == true;
         $eligible_peers = $request['eligible_peers'] == true;
 
+        $include_seeds = $request['include_seeds'] == 'true';
+        $include_peers = $request['include_peers'] == 'true';
 
-        $participants = Participant::with(['friends'])->whereHas('user', function ($query) use ($forms, $select_paypal_status_ok, $eligible_seed, $eligible_peers) {
+
+        $participants = Participant::with(['friends', 'user'])->whereHas('user', function ($query) use ($forms, $select_paypal_status_ok, $eligible_seed, $eligible_peers) {
             foreach ($forms as $key => $f) {
                 $query->where($f['name'], $f['operator'], $f['value']);
             }
@@ -65,7 +68,33 @@ class ParticipantController extends BaseController
                 $query->where("seed_id", "!=", NULL);
             }
         })->get();
+
+        $include_subroles = [];
+        if ($include_seeds) {
+            $include_subroles[] = "seed";
+        }
+        if ($include_peers) {
+            $include_subroles[] = "peer";
+        }
+
+        $participants = $this->filter_by_role($participants, $include_subroles);
+
+
+
         return new ParticipantsResource($participants);
+    }
+
+    private function filter_by_role($pArray, $roleArray = [])
+    {
+        $return = [];
+        foreach ($pArray as $user) {
+            if (isset($user->user->subrole)) {
+                if (in_array($user->user->subrole, $roleArray)) {
+                    $return[] = $user;
+                }
+            }
+        }
+        return $return;
     }
 
     /**

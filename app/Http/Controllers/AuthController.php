@@ -89,7 +89,8 @@ class AuthController extends BaseController
      */
     public function respondWithToken($token, $user)
     {
-
+        // echo 'parti';
+        // exit;
         $roleName = $user->roles()->first()->name;
         if (!$user->hasVerifiedEmail()) {
             $json = [
@@ -99,6 +100,7 @@ class AuthController extends BaseController
                 'mustVerifyEmailAddress' => true,
             ];
         } else {
+
             if ($roleName === 'participant') {
                 $p = Participant::where("user_id", $user->id)->first();
                 //                $friends = $p && $p->friends ? $p->friends : [];
