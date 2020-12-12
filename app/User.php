@@ -89,8 +89,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Shoul
 
     public function getSubroleAttribute()
     {
-        if ($this->hasVerifiedEmail() && $this->getRoleNames()[0] == 'participant') {
-
+        if ($this->getRoleNames()[0] == 'participant') {
             $user = User::with('participant')->where('id', $this->id)->first();
             return $user->participant->is_seed ? 'seed' : 'friend';
         }

@@ -18,14 +18,11 @@ run 'php artisan migrate --seed'
 ./vendor/bin/phpunit --group=001
 
 The project's core functions are covered by tests:
---Register 001
---RegisterWithQualificationForm 001
-!--LoginAdmin 002
+//!--LoginAdmin 002
 
+--Register,RegisterWithQualificationForm 001
 --invite researchers 003
 
---login - group 1
---invite researchers - group 2
 --configure project - group 3
 --create mock users - group 4
 --create project participant selection - group 5

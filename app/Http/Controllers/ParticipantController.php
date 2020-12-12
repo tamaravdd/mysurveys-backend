@@ -69,6 +69,8 @@ class ParticipantController extends BaseController
             }
         })->get();
 
+
+
         $include_subroles = [];
         if ($include_seeds) {
             $include_subroles[] = "seed";
@@ -76,10 +78,7 @@ class ParticipantController extends BaseController
         if ($include_peers) {
             $include_subroles[] = "peer";
         }
-
         $participants = $this->filter_by_role($participants, $include_subroles);
-
-
 
         return new ParticipantsResource($participants);
     }
