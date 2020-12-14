@@ -21,11 +21,23 @@ class EmailTemplates extends Seeder
         $eTemplates = [
             [
                 "subject" => "Invitation to a MySurveys study",
-                "body" => "Hello *username*, You are invited to join the following study:  *projecttitle*.  *projectinfo*  .<br><br>  The payment for participation is *maxpayout* USD. The study will be open until *projectenddate*, or until enough people participate. If you have any questions, please contact *responsibleperson*: *contactaddress* . <br><br>Please click on the link below to log in to your account or copy and paste it into your browser.   *loginlink* ",
+                "body" => "Hello *username*, *nl**nl* You are invited to join the following study:
+                 *nl**nl* *projecttitle*.*nl* *nl* *projectinfo* *nl* *nl*
+                 The payment for participation is *maxpayout* USD. The study will be open until *projectenddate*,
+                  or until enough people participate.*nl*If you have any questions, please contact *responsibleperson*: 
+                  *contactaddress*.*nl* *nl*  ",
+                //   TODO loginas 
+                //   Please click on the link below to log in to your account or copy and paste
+                //    it into your browser. *nl* 
             ],
             [
                 "subject" => "MySurveys Reminder",
-                "body" => "Hello *username*,  We would like to remind you that you are invited to join  the following study:  *projecttitle*.   *projectinfo*  . <br><br>The payment for participation is *maxpayout* USD. The study will be open until *projectenddate*, or until enough people participate. If you have any questions, please contact *responsibleperson*: *contactaddress* . <br><br>Please click on the link below to log in to your account, or copy and paste it in your browser.    *loginlink* ",
+                "body" => "Hello *username*, *nl**nl* We would like to remind you that you are invited to join
+                  the following study: *nl**nl* *projecttitle*. *nl* *nl* *projectinfo*.  *nl* *nl*
+                  The payment for participation is *maxpayout* USD. The study will be open until *projectenddate*,
+                  or until enough people participate.*nl* If you have any questions, please contact *responsibleperson*:
+                  *contactaddress*.*nl* *nl* Please click on the link below to log in to your account, or copy and paste
+                   it in your browser.  *nl* ",
             ],
         ];
         foreach ($eTemplates as $eData) {
