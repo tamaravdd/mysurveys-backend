@@ -94,7 +94,7 @@ class CustomMessage extends Notification
 
 
         $body = $this->replace_wildcards($this->data['body']);
-        var_dump($body);
+        // var_dump($body);
 
         $mailMessage = new MailMessage();
         $mailMessage->subject(Lang::get($this->data['subject']))

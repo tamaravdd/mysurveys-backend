@@ -56,7 +56,7 @@ class EmailTemplateMessage extends Notification
 
         $body = $this->emailCtrl->transformEmailTemplateBody($data, $data['project']->id, $notifiable);
 
-        var_dump($body);
+        // var_dump($body);
 
         $mailMessage = new MailMessage();
         $mailMessage->subject(Lang::get($body['subject']));
