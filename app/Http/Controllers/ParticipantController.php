@@ -76,7 +76,7 @@ class ParticipantController extends BaseController
             $include_subroles[] = "seed";
         }
         if ($include_peers) {
-            $include_subroles[] = "peer";
+            $include_subroles[] = "friend";
         }
         $participants = $this->filter_by_role($participants, $include_subroles);
 

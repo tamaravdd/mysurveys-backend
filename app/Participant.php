@@ -14,10 +14,11 @@ class Participant extends Model
      */
     protected $fillable = [
         'user_id',
-        'is_seed', 'first_name', 'family_name', 'birthyear',
+        'is_seed', 'first_name', 'family_name', 'birthyear', "qualification_us", "qualification_parents",
+        "qualification_friends", "qualification_gm", "qualification_vac",
         'street', 'zip', 'city', 'seed_id', 'paypal_id', 'paypal_id_status', 'paypal_me'
     ];
-    protected $appends = array('verified_friends_count', 'eligible_seed', 'email');
+    protected $appends = array('verified_friends_count', 'eligible_seed', 'email', 'survey_complete');
     protected $primaryKey = 'user_id';
 
     public static function validator()
@@ -27,6 +28,9 @@ class Participant extends Model
             'paypal_id_status' => 'string'
         ];
     }
+
+
+
 
     /**
      * Check for duplicate user, return email if new
@@ -114,6 +118,11 @@ class Participant extends Model
     public function getEligibleSeedAttribute()
     {
         return true;
+    }
+
+    public function getSurveyCompleteAttribute()
+    {
+        return !is_null($this->qualification_us);
     }
 
     public function getEmailAttribute()

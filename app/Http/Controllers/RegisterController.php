@@ -100,6 +100,45 @@ class RegisterController extends BaseController
         return response()->json(['user exists'], 500);
     }
 
+
+    /**
+     * Invitee submits qualification form
+     */
+    public function user_submit_qualification_form(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'qualificationForm' => 'required|array'
+        ]);
+        $user = Auth::user();
+        if ($validator->fails() || !$user) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $message) {
+                $errors[] = $message[0];
+            }
+            return response()->json($errors, 400);
+        }
+        $formData = $request['qualificationForm'];
+        foreach ($formData as $key => &$value) {
+            $value = $value == 'true' ? 1 : $value;
+        }
+
+        $fda = array(
+            "qualification_parents" => $formData['parents'],
+            "qualification_gm" => $formData['gm'],
+            "qualification_vac" => $formData['vac'],
+            "qualification_us" => $formData['us'],
+            "qualification_friends" => $formData['friends'],
+        );
+
+        $participant = Participant::where("user_id", $user->id)->first();
+
+        $participant->fill($fda);
+        $participant->save();
+
+        return $this->sendResponse('submitted', 200);
+    }
+
     /**
      * Register the user
      * @param Request $request

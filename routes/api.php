@@ -18,6 +18,8 @@ Route::group([
 ], function ($router) {
     Route::post('login', 'AuthController@login');
     Route::post('register', 'RegisterController@register');
+    Route::post('user_submit_qualification_form', 'RegisterController@user_submit_qualification_form');
+
     Route::post('resend_verification_email', 'RegisterController@resend_verification_email');
     Route::post('check_change_password_code', 'RegisterController@check_change_password_code');
     Route::post('check_verification_code', 'RegisterController@check_verification_code');
@@ -48,7 +50,6 @@ Route::get('omni', 'OmniController@omni');
 Route::get('logs', 'LogController@logs');
 Route::post('log', 'LogController@log');
 Route::get('refresh', 'AuthController@refresh')->name('api.jwt.refresh');
-Route::post('invite_friend', 'RegisterController@invite_participant');
 Route::post('validate_paypal', 'PaypalController@validate_paypal');
 Route::get('test', function (Request $request) {
     return 'response';
@@ -94,6 +95,8 @@ Route::group(['middleware' => ['role:administrator|researcher']], function () {
  *
  */
 Route::group(['middleware' => ['role:participant', 'verified']], function () {
+    Route::post('invite_friend', 'RegisterController@invite_participant');
+
     Route::get('my_projects', 'MyProjectsController@my_projects');
     Route::post('start_project', 'MyProjectsController@start_project');
     Route::post('verify_project_code', 'MyProjectsController@verify_project_code');
