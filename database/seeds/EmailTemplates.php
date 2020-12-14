@@ -20,20 +20,12 @@ class EmailTemplates extends Seeder
 
         $eTemplates = [
             [
-                "projects_projectid" => 1001,
-                "languages_idlanguages" => "0",
-                "ettype" => "Invitation",
                 "subject" => "Invitation to a MySurveys study",
-                "body" => "*title* *username*, *nl**nl* You are invited to join the following study: *nl**nl* *projecttitle*.*nl* *nl* *projectinfo* *nl* *nl*.<br><br>  The payment for participation is *maxpayout* USD. The study will be open until *projectenddate*, or until enough people participate. If you have any questions, please contact *responsibleperson*:*nl* *contactaddress**nl* *nl*. <br><br>Please click on the link below to log in to your account or copy and paste it into your browser. *nl*  *loginlink* ",
-                "etdefault" => "1"
+                "body" => "Hello *username*, You are invited to join the following study:  *projecttitle*.  *projectinfo*  .<br><br>  The payment for participation is *maxpayout* USD. The study will be open until *projectenddate*, or until enough people participate. If you have any questions, please contact *responsibleperson*: *contactaddress* . <br><br>Please click on the link below to log in to your account or copy and paste it into your browser.   *loginlink* ",
             ],
             [
-                "projects_projectid" => 1002,
-                "languages_idlanguages" => "0",
-                "ettype" => "Reminder",
                 "subject" => "MySurveys Reminder",
-                "body" => "*title* *username*, *nl**nl* We would like to remind you that you are invited to join  the following study: *nl**nl* *projecttitle*. *nl* *nl* *projectinfo* *nl* *nl*. <br><br>The payment for participation is *maxpayout* USD. The study will be open until *projectenddate*, or until enough people participate. If you have any questions, please contact *responsibleperson*:*nl* *contactaddress**nl* *nl*. <br><br>Please click on the link below to log in to your account, or copy and paste it in your browser.  *nl*  *loginlink* ",
-                "etdefault" => "1"
+                "body" => "Hello *username*,  We would like to remind you that you are invited to join  the following study:  *projecttitle*.   *projectinfo*  . <br><br>The payment for participation is *maxpayout* USD. The study will be open until *projectenddate*, or until enough people participate. If you have any questions, please contact *responsibleperson*: *contactaddress* . <br><br>Please click on the link below to log in to your account, or copy and paste it in your browser.    *loginlink* ",
             ],
         ];
         foreach ($eTemplates as $eData) {

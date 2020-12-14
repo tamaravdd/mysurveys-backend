@@ -15,6 +15,8 @@ use App\Notifications\PasswordResetSuccess;
 use App\Notifications\ProjectInvitation;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Notifications\CustomMessage;
+use App\Notifications\EmailTemplateMessage;
+
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail, ShouldQueue
 {
@@ -148,6 +150,15 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Shoul
         }
     }
 
+    /**
+     * Send email template message
+     * @param
+     */
+    public function sendEmailTemplateMessage($data = [])
+    {
+        $this->notify(new EmailTemplateMessage($data));
+    }
+
 
     /**
      * Send custom message
@@ -155,7 +166,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Shoul
      */
     public function sendCustomMessage($data = [])
     {
-        $this->notify(new CustomMessage($data)); // my notification
+        $this->notify(new CustomMessage($data));
     }
 
     /**

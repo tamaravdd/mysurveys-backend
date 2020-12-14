@@ -54,7 +54,6 @@ Route::get('test', function (Request $request) {
     return 'response';
 });
 Route::resource('users', 'UserController');
-Route::resource('email_templates', 'EmailTemplateController');
 Route::resource('projectparticipant', 'ProjectParticipantController');
 Route::resource('participants', 'ParticipantController');
 
@@ -79,6 +78,9 @@ Route::group(['middleware' => ['role:administrator'],    'middleware' => 'api'],
  *
  */
 Route::group(['middleware' => ['role:administrator|researcher']], function () {
+    Route::resource('email_templates', 'EmailTemplateController');
+    Route::post('email_templates_with_project', 'EmailTemplateController@email_templates_with_project');
+
     Route::post('update_participant_validation', 'PaymentValidationController@update_participant_validation');
     Route::resource('projects', 'ProjectController');
     Route::post('send_project_reminders', 'ProjectInvitationController@send_project_reminders');

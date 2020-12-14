@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\EmailTemplate;
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use App\Participant;
@@ -13,6 +14,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Sendlist;
+use Egulias\EmailValidator\Warning\EmailTooLong;
 
 // $pp = ProjectParticipant::with(['user' => function ($query) use ($project_id) {
 //     $query->where('projects_projectid', '=', $project_id);
@@ -37,19 +39,25 @@ class ProjectInvitationController extends BaseController
     {
 
         $validator = Validator::make($request->all(), [
-            'subject' => 'required',
-            'body' => 'required',
-            'link' => 'url',
+            'template_id' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->sendError(implode(",", $validator->messages()->all()), implode(",", $validator->messages()->all()));
         }
         $ids = $request['ids'];
         $data = $request->all();
+        $data['project'] = Project::find($data['project_id']);
 
+        $template = EmailTemplate::find($request['template_id']);
+        $data['body'] = $template['body'];
+        $data['subject'] = $template['subject'];
+
+
+        // exit;
         if ($request['test']) {
             $user = Auth()->user();
-            $user->sendCustomMessage($data);
+            // var_dump($user);
+            $user->sendEmailTemplateMessage($data);
             return $this->sendResponse('Test email sent to ' . $user->email, $user->email);
         }
 
@@ -58,7 +66,7 @@ class ProjectInvitationController extends BaseController
         foreach ($users_actual as $message_target) {
             //            TODO factor into env
             sleep(1);
-            $message_target->sendCustomMessage($data);
+            $message_target->sendEmailTemplateMessage($data);
             $this->logger('info', "Custom message sent to participant", ["user" => $message_target]);
         }
         return $this->sendResponse($ids, 'ids');
