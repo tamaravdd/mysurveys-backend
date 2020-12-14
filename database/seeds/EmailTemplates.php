@@ -15,9 +15,6 @@ class EmailTemplates extends Seeder
      */
     public function run()
     {
-
-        //email templates
-
         $eTemplates = [
             [
                 "subject" => "Invitation to a MySurveys study",
