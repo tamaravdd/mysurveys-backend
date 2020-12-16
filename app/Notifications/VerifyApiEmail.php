@@ -28,7 +28,6 @@ class VerifyApiEmail extends VerifyEmailBase
         $role = $notifiable->getRoleNames()[0];
         $verificationUrl = $this->verificationUrl($notifiable);
         $subjectIntro = '[' . config('app.name') . ']';
-        //Is user resending
         $resend = isset($this->data['resend']) || false;
         $salutation = 'You\'ve been invited';
         if ($role === 'participant' && !isset($this->data['invite'])) {

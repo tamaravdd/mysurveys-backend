@@ -49,52 +49,22 @@ class CustomMessage extends Notification
     private function replace_wildcards($body)
     {
 
-        // $replacements[] = array('*link*', $row['link']);
-        // $replacements[] = array('*responsibleperson*', stripslashes($row['responsible_person']) );
-        // $replacements[] = array('*projecttitle*', stripslashes($row['project_title']));
-        // $replacements[] = array('*projectinfo*', stripslashes($row['description']));
-        // $replacements[] = array('*projectenddate*', datetimeReassemblePrettyEmail($row['defaultend'], $lang));
-        // $replacements[] = array('*maxpayout*', $row['max_payout']);
-        // $replacements[] = array('*expectedpayout*', $row['exp_payout']);
-        // $replacements[] = array('*loginlink*', selfURLbase() . 'loginuser.php?loginas=' . $emailaddress);
-
-        // $replacements[] = array('*adminaddress*', getEmailAdressFromNickname('admin'));
-        // $replacements[] = array('*contactaddress*', $_SESSION['contactaddress']);
-
         $row = $this->data['project']->project_title;
 
         $patterns = array();
         $patterns[0] = "/\*\*\w+\*\*/";
-
-
 
         $body = str_replace("**project_title**",  $this->data['project']->project_title, $body);
         $replacements[0] = "";
         $body =  preg_replace($patterns, $replacements, $body);
         var_dump($body);
         return $body;
-
-        //     $replacements = array();
-        // $replacements[] = array('*link*', $row['link']);
-        // $replacements[] = array('*responsibleperson*', stripslashes($row['responsible_person']));
-        // $replacements[] = array('*projecttitle*', stripslashes($row['project_title']));
-        // $replacements[] = array('*projectinfo*', stripslashes($row['description']));
-        // $replacements[] = array('*projectenddate*', datetimeReassemblePrettyEmail($row['defaultend'], $lang));
-        // $replacements[] = array('*maxpayout*', $row['max_payout']);
-        // $replacements[] = array('*expectedpayout*', $row['exp_payout']);
-        // $replacements[] = array('*loginlink*', selfURLbase() . 'loginuser.php?loginas=' . $emailaddress);
-
-        // $replacements[] = array('*adminaddress*', getEmailAdressFromNickname('admin'));
-        // $replacements[] = array('*contactaddress*', $_SESSION['contactaddress']);
     }
 
     private function getMessage($notifiable, $extra = [])
     {
 
-
-
         $body = $this->replace_wildcards($this->data['body']);
-        // var_dump($body);
 
         $mailMessage = new MailMessage();
         $mailMessage->subject(Lang::get($this->data['subject']))
@@ -103,7 +73,6 @@ class CustomMessage extends Notification
         if (isset($this->data['link']) && $this->data['link'] !== '') {
             $mailMessage->action(Lang::get($this->data['link']), $this->data['link']);
         }
-
         return $mailMessage;
     }
 

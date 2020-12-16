@@ -175,7 +175,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Shoul
      */
     public function sendInvitationNotification($data = [])
     {
-        $this->notify(new ProjectInvitation($data)); // my notification
+        $this->notify(new ProjectInvitation($data));
     }
 
     /**
@@ -183,7 +183,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Shoul
      */
     public function sendApiEmailVerificationNotification($data = [])
     {
-        $this->notify(new VerifyApiEmail($data)); // my notification
+        $this->notify(new VerifyApiEmail($data));
     }
 
     /**

@@ -22,6 +22,13 @@ class PaymentValidationController extends BaseController
                 ->where("participants_userid", $s['participants_userid'])
                 ->first();
             $pp->amount_to_pay = $s['amount_to_pay'];
+            $pp->paymentorders_payorderid = $s['paymentorders_payorderid'];
+            if (isset($s['payment_confirmed'])) {
+                $confirmed = date("Y-m-d H:i:s");
+                $pp->payment_confirmed = $confirmed;
+            }
+
+
             $dt = date("Y-m-d H:i:s");
             $pp->validated = $dt;
             $pp->save();

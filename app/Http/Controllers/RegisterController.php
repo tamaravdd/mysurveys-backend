@@ -27,8 +27,40 @@ class RegisterController extends BaseController
 
     public function __construct()
     {
-        //        TODO
+        //        TODO - check updated docs 
         //        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
+
+    /**
+     * Register the user
+     * @param Request $request
+     * @return type
+     */
+    public function register(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+            'qualificationForm' => 'array'
+        ]);
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $message) {
+                $errors[] = $message[0];
+            }
+            return response()->json($errors, 400);
+        }
+        $user_info = $validator->valid();
+        if ($newuser = $this->create_user($user_info, 'participant')) {
+            $this->create_participant($newuser->id);
+            if (isset($user_info['qualificationForm'])) {
+                Participant::makeSeed($newuser->id, $user_info['qualificationForm']);
+            }
+            $newuser->sendApiEmailVerificationNotification($user_info);
+            return response()->json(['user' => $newuser], 201);
+        }
     }
 
     /**
@@ -139,41 +171,6 @@ class RegisterController extends BaseController
         return $this->sendResponse('submitted', 200);
     }
 
-    /**
-     * Register the user
-     * @param Request $request
-     * @return type
-     */
-    public function register(Request $request)
-    {
-
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'qualificationForm' => 'array'
-        ]);
-        if ($validator->fails()) {
-            $errors = [];
-            foreach ($validator->messages()->toArray() as $key => $message) {
-                $errors[] = $message[0];
-            }
-            return response()->json($errors, 400);
-        }
-        $user_info = $validator->valid();
-        // echo 'regoster';
-        // exit;
-        if ($newuser = $this->create_user($user_info, 'participant')) {
-
-            $part = $this->create_participant($newuser->id);
-
-            if (isset($user_info['qualificationForm'])) {
-                //                $user_info
-                Participant::makeSeed($newuser->id, $user_info['qualificationForm']);
-            }
-            $newuser->sendApiEmailVerificationNotification($user_info);
-            return response()->json(['user' => $newuser], 201);
-        }
-    }
 
     /**
      * Resend the verification Email
@@ -325,6 +322,8 @@ class RegisterController extends BaseController
     {
         $aData = [
             "email" => $user_info["email"],
+            "username" => $user_info["email"],
+
             "password" => bcrypt($user_info["password"]),
             "verification_code" => sha1(time())
         ];

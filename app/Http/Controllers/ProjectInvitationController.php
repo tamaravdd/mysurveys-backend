@@ -52,11 +52,8 @@ class ProjectInvitationController extends BaseController
         $data['body'] = $template['body'];
         $data['subject'] = $template['subject'];
 
-
-        // exit;
         if ($request['test']) {
             $user = Auth()->user();
-            // var_dump($user);
             $user->sendEmailTemplateMessage($data);
             return $this->sendResponse('Test email sent to ' . $user->email, $user->email);
         }
