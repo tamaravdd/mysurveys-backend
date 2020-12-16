@@ -25,12 +25,11 @@ class MyProjectsController extends BaseController
             'project_id' => 'required'
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Missing project code');
+            return $this->sendError('Missing project code or ID');
         }
         $user_id = $request->user()->id;
         $project_id = $validator->valid()['project_id'];
         $code = $validator->valid()['code'];
-
         $project_actual = Project::find($project_id);
         $max_project_payout = $project_actual->max_payout;
         $pp = ProjectParticipant::where("participants_userid", $user_id)
