@@ -137,7 +137,7 @@ class UserConfig extends Seeder
             "creator_userid" => 2,
             "state" => "Design",
             "start_state" => "Open",
-            "link_method" => 'Direct',
+            // "link_method" => 'Direct',
             "link" => "https://ww2.unipark.de/uc/scitest/?a=&b=",
             "responsible_person" => "researcher@mysurveys.santafe.edu",
             "description" => "Sample project description",

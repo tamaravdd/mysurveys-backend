@@ -4,14 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProjectsTable extends Migration {
+class CreateProjectsTable extends Migration
+{
 
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string("name")->nullable();
@@ -19,7 +21,7 @@ class CreateProjectsTable extends Migration {
             $table->integer("creator_userid")->nullable();
             $table->enum('state', ['Design', 'Started', 'Halted'])->default("Design");
             $table->enum('start_state', ['Open', 'Closed'])->default("Open");
-            $table->enum('link_method', ['Direct', 'Login', 'LoginInfo', 'Unipark'])->Default("LoginInfo");
+            // $table->enum('link_method', ['Direct', 'Login', 'LoginInfo', 'Unipark'])->Default("UniPark");
             $table->text("link")->nullable();
             $table->text("refcode")->nullable();
             $table->string("responsible_person")->nullable();
@@ -50,8 +52,8 @@ class CreateProjectsTable extends Migration {
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('projects');
     }
-
 }

@@ -5,7 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 
-class Project extends JsonResource {
+class Project extends JsonResource
+{
 
     /**
      * Transform the resource into an array.
@@ -13,7 +14,8 @@ class Project extends JsonResource {
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request) {
+    public function toArray($request)
+    {
         date_default_timezone_set('America/Denver');
         return [
             'project_title' => $this->project_title,
@@ -22,7 +24,7 @@ class Project extends JsonResource {
             'state' => $this->state,
             'start_state' => $this->start_state,
             'link' => $this->link,
-            'link_method' => $this->link_method,
+            // 'link_method' => $this->link_method,
             'payout_type' => $this->payout_type,
             'max_payout' => $this->max_payout,
             'exp_payout' => $this->exp_payout,
@@ -37,5 +39,4 @@ class Project extends JsonResource {
             'quota' => $this->quota,
         ];
     }
-
 }

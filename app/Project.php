@@ -11,7 +11,8 @@ class Project extends Model
     protected $fillable = [
         "project_title", "description",
         "id", "defaultend", "defaultstart", "responsible_person", "link",
-        "link_method", "payout_type", "max_payout", "exp_payout",
+        // "link_method",
+        "payout_type", "max_payout", "exp_payout",
         "desired_sample_size",
         "state", "start_state", "created_at",
         "desired_num_invitations",

@@ -124,8 +124,8 @@ class MyProjectsController extends BaseController
      */
     public function makeProjectLink($pp, $p)
     {
-        $p = (object)$p;
-        $pp = (object)$pp;
+        // $p = (object)$p;
+        // $pp = (object)$pp;
 
 
         $safe_id = $pp->safeid;
@@ -134,36 +134,55 @@ class MyProjectsController extends BaseController
         $param2 = $pp->userparam2;
 
         $linkparams = [];
-        if ($p->link_method == 'LoginInfo') {
-            $linkparams['id'] = $safe_id;
-            $linkparams['studyid'] = $safe_id;
-            $linkparams['studyid'] = $refcode;
-            if (isset($param1)) {
-                $linkparams['param1'] = urlencode($param1);
-            }
-            if (isset($param2)) {
-                $linkparams['param2'] = urlencode($param2);
-            }
-            $link = $p->link . '?' . http_build_query($linkparams, '', '&');
-        } else if ($p->link_method == 'Unipark') {
-            $linkparams['id'] = $safe_id;
-            $param3 = $safe_id;
-            $linkparams['a'] = $safe_id;
-            $linkparams['b'] = $refcode;
-            if (isset($param1)) {
-                $linkparams['c'] = urlencode($param1);
-            }
-
-            if (isset($param2)) {
-                $linkparams['d'] = urlencode($param2);
-            }
-            if (isset($param3)) {
-                $linkparams['ses_password'] = urlencode($param3);
-            }
-            $link = $p['link'] . '?' . http_build_query($linkparams, '', '&');
-        } else {
-            $link = $p['link'];
+        $linkparams['id'] = $safe_id;
+        $param3 = $safe_id;
+        $linkparams['a'] = $safe_id;
+        $linkparams['b'] = $refcode;
+        if (isset($param1)) {
+            $linkparams['c'] = urlencode($param1);
         }
+
+        if (isset($param2)) {
+            $linkparams['d'] = urlencode($param2);
+        }
+        if (isset($param3)) {
+            $linkparams['ses_password'] = urlencode($param3);
+        }
+
+        $link = $p['link'] . '?' . http_build_query($linkparams, '', '&');
+
+
+
+        // if ($p->link_method == 'LoginInfo') {
+        //     $linkparams['id'] = $safe_id;
+        //     $linkparams['studyid'] = $safe_id;
+        //     $linkparams['studyid'] = $refcode;
+        //     if (isset($param1)) {
+        //         $linkparams['param1'] = urlencode($param1);
+        //     }
+        //     if (isset($param2)) {
+        //         $linkparams['param2'] = urlencode($param2);
+        //     }
+        //     $link = $p->link . '?' . http_build_query($linkparams, '', '&');
+        // } else if ($p->link_method == 'Unipark') {
+        //     $linkparams['id'] = $safe_id;
+        //     $param3 = $safe_id;
+        //     $linkparams['a'] = $safe_id;
+        //     $linkparams['b'] = $refcode;
+        //     if (isset($param1)) {
+        //         $linkparams['c'] = urlencode($param1);
+        //     }
+
+        //     if (isset($param2)) {
+        //         $linkparams['d'] = urlencode($param2);
+        //     }
+        //     if (isset($param3)) {
+        //         $linkparams['ses_password'] = urlencode($param3);
+        //     }
+        //     $link = $p['link'] . '?' . http_build_query($linkparams, '', '&');
+        // } else {
+        //     $link = $p['link'];
+        // }
         return $link;
     }
 }
