@@ -132,7 +132,7 @@ class ProjectInvitationController extends BaseController
         foreach ($pp_actual as $invitee_participant) {
             sleep(1);
             DB::transaction(function () use ($data, $invitee_participant, $now,  $project_id, &$count) {
-
+                $data['participant'] = $invitee_participant;
                 $invitee_participant->invited = $now;
                 $invitee_participant->save();
 

@@ -7,11 +7,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Http\Controllers\BaseController;
+use App\Http\Controllers\MyProjectsController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Lang;
+
 use App\Log;
 use App\User;
 
-class ProjectInvitation extends Notification implements ShouldQueue {
+class ProjectInvitation extends Notification implements ShouldQueue
+{
 
     use Queueable;
 
@@ -22,7 +26,8 @@ class ProjectInvitation extends Notification implements ShouldQueue {
      *
      * @return void
      */
-    public function __construct($data) {
+    public function __construct($data)
+    {
         $this->data = $data;
     }
 
@@ -32,7 +37,8 @@ class ProjectInvitation extends Notification implements ShouldQueue {
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable) {
+    public function via($notifiable)
+    {
         return ['mail'];
     }
 
@@ -42,7 +48,8 @@ class ProjectInvitation extends Notification implements ShouldQueue {
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable) {
+    public function toMail($notifiable)
+    {
 
         $notifiable->load('participant');
         return $this->getMessage($notifiable, $this->data);
@@ -54,25 +61,32 @@ class ProjectInvitation extends Notification implements ShouldQueue {
      * TODO:  contact physical address?
      */
 
-    private function getMessage($notifiable, $extra = []) {
+    private function getMessage($notifiable, $extra = [])
+    {
 
         $project = $this->data;
+        $participant = $project['participant'];
+
+        $projController = new MyProjectsController();
+        $link = $projController->makeProjectLink($participant, $project);
         $mailMessage = new MailMessage();
 
         $reminder = $project['remind'] ? 'Reminder: ' : '';
 
-        $mailMessage->subject(Lang::get($reminder. 'Invitation to a ' . config('app.name') . ' Study'))
-                ->greeting("Greetings " . $notifiable->participant['first_name'] . "!");
+        $mailMessage->subject(Lang::get($reminder . 'Invitation to a ' . config('app.name') . ' Study'))
+            ->greeting("Greetings " . $notifiable->participant['first_name'] . "!");
 
         $mailMessage
-                ->line('You are invited to join the following study:')
-                ->line("Project title: " . $project['project_title'])
-                ->line("Project description: " . $project['description'])
-                ->line("The payment for participation is $" . $project['max_payout'] . " USD.  The study will be open until " . $project['defaultend'] . " or until enough people participate.")
-                ->line("If you have any questions, please contact " . $project['responsible_person'])
-                ->line('')
-                ->line('Please click on the link below to log in to your account or copy and paste it into your browser.')
-                ->action(Lang::get($this->projectInvitationUrl()), $this->projectInvitationUrl());
+            ->line('You are invited to join the following study:')
+            ->line("Project title: " . $project['project_title'])
+            ->line("Project description: " . $project['description'])
+            ->line("The payment for participation is $" . $project['max_payout'] . " USD.  The study will be open until " . $project['defaultend'] . " or until enough people participate.")
+            ->line("If you have any questions, please contact " . $project['responsible_person'])
+            ->line('')
+            ->line('Please click on the link below to start the project.')
+            ->action('Start Project', $link)
+            // ->action(Lang::get($this->projectInvitationUrl()), $this->projectInvitationUrl())
+        ;
 
         return $mailMessage;
     }
@@ -83,15 +97,16 @@ class ProjectInvitation extends Notification implements ShouldQueue {
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable) {
+    public function toArray($notifiable)
+    {
         return [
-                //
+            //
         ];
     }
 
-    protected function projectInvitationUrl() {
+    protected function projectInvitationUrl()
+    {
         $frontend = \config('constants.frontend');
         return $frontend . '/dashboard/my-projects';
     }
-
 }

@@ -124,6 +124,9 @@ class MyProjectsController extends BaseController
      */
     public function makeProjectLink($pp, $p)
     {
+        $p = (object)$p;
+        $pp = (object)$pp;
+
 
         $safe_id = $pp->safeid;
         $refcode = $pp->refcode;
