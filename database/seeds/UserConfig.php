@@ -37,7 +37,7 @@ class UserConfig extends Seeder
         Participant::create(['user_id' => 1]);
 
         $admin->save();
-
+        //initial researcher
         $researcher = User::create([
             'username' => 'Researcher',
             'email' => 'researcher@mysurveys.santafe.edutest',
@@ -155,6 +155,21 @@ class UserConfig extends Seeder
         $faker = \Faker\Factory::create();
 
         //pause mock participants
+
+        // TODO 
+        // PL researcher 
+        $researcher = User::create([
+            'username' => 'PL Researcher',
+            'email' => 'rphil@dukecitydigital.com',
+            'password' => bcrypt($DEFAULT_PASSWORD)
+        ]);
+        $researcher->assignRole('researcher');
+        $researcher->email_verified_at = Carbon::now();
+        $researcher->save();
+
+        DB::table("researchers")->insert([
+            ['nickname' => 'rphil', 'user_id' => 2]
+        ]);
 
         if ($should_create_participants) :
             for ($i = 0; $i <= $makeParticipants; $i++) :

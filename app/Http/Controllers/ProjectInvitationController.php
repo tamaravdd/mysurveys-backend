@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Sendlist;
 use Egulias\EmailValidator\Warning\EmailTooLong;
 
+use function Ramsey\Uuid\v1;
+
 // $pp = ProjectParticipant::with(['user' => function ($query) use ($project_id) {
 //     $query->where('projects_projectid', '=', $project_id);
 // },])->get();
@@ -78,9 +80,6 @@ class ProjectInvitationController extends BaseController
         //default as DEV for no actual sending
         $DEV = 'DEVELOPMENT';
 
-        //code only setting - bypass for checks
-        //        TODO handle bypass /disable
-        $BYPASS = True;
         $validator = Validator::make($request->all(), [
             'ids' => 'required',
             'project_id' => 'required',
@@ -101,13 +100,13 @@ class ProjectInvitationController extends BaseController
 
         $users_actual = User::with('participant')->whereIn("id", $user_ids)->get();
         $invitation_errors = $this->check_if_invitation_is_ok($project_id, $user_ids);
-        $this->updateStartState($project_id, $invitation_errors);
 
         if ($DEV === 'DEVELOPMENT') {
             return $this->sendResponse(["ERRORS" => $invitation_errors, "PREVIEW" => $users_actual], 200);
         }
-        if (!empty($invitation_errors) && (!$BYPASS)) {
-            return $this->sendError($invitation_errors);
+
+        if (!empty($invitation_errors)) {
+            return $this->sendResponse(implode(",", $invitation_errors), $invitation_errors, 400);
         }
 
         $pp_actual = ProjectParticipant::whereIn("participants_userid", $ids)
@@ -154,7 +153,6 @@ class ProjectInvitationController extends BaseController
             });
         }
 
-        //        $users_actual->load('participants');
         return $this->sendResponse($count . " Invitations sent", 200);
     }
 
@@ -171,36 +169,21 @@ class ProjectInvitationController extends BaseController
         $participant_ids = $ids;
         $errors = [];
 
-        $email_verification_test = ProjectParticipant::with('user')->whereHas('user', function ($q) {
-            $q->where('email_verified_at', NULL);
-        })
-            ->whereIn("participants_userid", $participant_ids)
+        $omnitest = ProjectParticipant::with(['user', 'participant'])->whereIn("participants_userid", $participant_ids)
             ->where("projects_projectid", $project_id)
             ->get();
 
-        if (!$email_verification_test->isEmpty()) {
-            $errors[] = 'Error - 1 or more users has not validated email';
-        }
+        foreach ($omnitest as $usr) {
+            if ($usr->participant->paypal_id_status !== 'Ok') {
+                $errors[0] = 'Error - 1 or more users has not verified PayPal';
+            }
+            if ($usr->user->email_verified_at == NULL) {
+                $errors[1] = 'Error - 1 or more users has not validated email';
+            }
 
-        $banned_test = ProjectParticipant::with('user')->whereHas('user', function ($q) {
-            $q->where('banned', "=", 1);
-        })
-            ->whereIn("participants_userid", $participant_ids)
-            ->where("projects_projectid", $project_id)
-            ->get();
-
-        if (!$banned_test->isEmpty()) {
-            $errors[] = 'Error - 1 or more users is banned';
-        }
-
-        $paypal_verification_test = ProjectParticipant::with('participant')->whereHas('participant', function ($q) {
-            $q->whereNull('paypal_id_status');
-        })
-            ->whereIn("participants_userid", $participant_ids)
-            ->where("projects_projectid", $project_id)
-            ->get();
-        if (!$paypal_verification_test->isEmpty()) {
-            $errors[] = 'Error - 1 or more users has not verified PayPal';
+            if ($usr->user->banned) {
+                $errors[2] = 'Error - 1 or more users is banned';
+            }
         }
         return $errors;
     }
@@ -222,17 +205,25 @@ class ProjectInvitationController extends BaseController
             $errors[] = $project->default_end_date_elapsed;
         }
 
-        if ($project->expected_payout_exceeds_quota($user_ids)) {
-            $errors[] = $project->expected_payout_exceeds_quota($user_ids);
+        if (!$project->exp_payout) {
+            $errors[] = 'The project has no expected payout';
+        }
+
+        if (!$project->max_payout || $project->max_payout == 0) {
+            $errors[] =  'No max payout is set for the project';
+        }
+
+        $total_max_payout = $project->get_number_of_participants() * $project->max_payout;
+        if ($total_max_payout > $project->quota) {
+            $errors[] =  'The total max payout (participants X max_payout) for the project is greater than the project quota';
         }
 
         if ($project->state !== 'Started') {
             $errors[] = 'Project state is ' . $project->state;
         }
 
-
-        if (!$project->exp_payout) {
-            $errors[] = 'The project has no expected payout';
+        if ($project->start_state !== 'Open') {
+            $errors[] = 'Project start state is ' . $project->start_state;
         }
 
 
@@ -259,12 +250,7 @@ class ProjectInvitationController extends BaseController
         if ($invitation_threshold) {
             $errors[] = "The proposed number of invitations plus the number already invited exceeds the desired number for the project";
         }
-
         return $errors;
-        // TODO check below, still necessary?  
-        // if num finished is less than desired sample size , can set project state to open
-        // should wrap these checks in an updateStartState func
-        // {{{then wrap all of the preceeding in a checkIfInvitationIsOk function}}}
     }
 
     /**

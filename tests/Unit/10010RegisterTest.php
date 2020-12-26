@@ -39,7 +39,7 @@ class RegisterTest extends TestCase
         ]);
 
         $error_response = $this->postJson('api/auth/login', [
-            'email' => 'researchefar@*TEST*mysurveys.santafe.edu',
+            'email' => 'participant@*TEST*mysurveys.santafe.edu',
             'password' => 'Mc{&V=HQ@T<z4YaL11'
         ]);
 

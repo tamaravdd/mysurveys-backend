@@ -61,13 +61,16 @@ class Project extends Model
     }
 
     /**
-     * Check max payout is set
+     * Check exp. payout exceeds quota
      */
     public function expected_payout_exceeds_quota($participants)
     {
-        if (!$this->max_payout) {
-            return 'No max payout is set for the project';
-        }
+        // ...
+    }
+
+    public function get_number_of_participants()
+    {
+        return ProjectParticipant::where("projects_projectid", $this->id)->count();
     }
 
     /**
