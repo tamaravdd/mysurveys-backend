@@ -99,5 +99,8 @@ class UserController extends BaseController
     public function destroy(User $user)
     {
         //
+        // if (Auth::user()->role !== 'administrator') {
+        // $this->sendError("Only administrators can delete");
+        // }
     }
 }

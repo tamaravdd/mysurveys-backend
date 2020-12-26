@@ -172,4 +172,28 @@ class ParticipantController extends BaseController
         $this->logger('info', Auth::user()->email . ' updated ' . $p->email, $validator->valid());
         return $this->sendResponse($p, 'Profile updated successfully.');
     }
+
+    /**
+     * Remove the specified Participant from storage.
+     *
+     * @param  \App\Participant $participant
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, $id)
+    {
+        //
+
+        if (Auth::user()->role !== 'administrator') {
+            return $this->sendError("Only administrators can delete");
+        }
+
+        if ($id == 1) {
+            return $this->sendError("Don't delete the administrator");
+        }
+        $d = User::find($id)->delete();
+        if ($d) {
+            return $this->sendResponse("Deleted user", 200);
+        }
+        return $this->sendError("Problem deleting user", 401);
+    }
 }
