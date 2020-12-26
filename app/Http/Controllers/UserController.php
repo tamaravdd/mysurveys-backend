@@ -55,6 +55,7 @@ class UserController extends BaseController
      */
     public function show(User $user)
     {
+        $user->load("participant");
         return $user;
     }
 
@@ -86,6 +87,8 @@ class UserController extends BaseController
             $p->save();
         }
         $user->update($request->all());
+        $user->participant->paypal_id_status = $request['paypal_id_status'];
+        $user->participant->save();
         $user->save();
         return $user;
     }

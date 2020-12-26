@@ -37,7 +37,6 @@ class MyProjectsController extends BaseController
             ->where("safeid", $code)
             ->first();
         $pp->finished = date("Y-m-d H:i:s");
-
         $pp->amount_to_pay = $max_project_payout;
         $pp->save();
         return $pp;
