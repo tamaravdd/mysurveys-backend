@@ -226,7 +226,6 @@ class RegisterController extends BaseController
 
         if ($user && $passwordReset) {
             $user->sendPasswordResetNotification($token);
-            $message = $message . ' ' . $user->id;
         }
         return response()->json(["message" => $message], 200);
     }
