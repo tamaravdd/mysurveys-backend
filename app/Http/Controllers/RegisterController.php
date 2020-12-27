@@ -112,6 +112,9 @@ class RegisterController extends BaseController
         }
 
         $data = $validator->valid();
+        if (isset($request['custom_message'])) {
+            $data['custom_message'] = $request->all()['custom_message'];
+        }
         $data['password'] = Utilities::generateUUID(12);
         $newuser = $this->create_user($data, 'participant');
         if ($newuser && Auth::user()) {

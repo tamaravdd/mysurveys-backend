@@ -76,6 +76,8 @@ class ProjectInvitation extends Notification implements ShouldQueue
         $mailMessage->subject(Lang::get($reminder . 'Invitation to a ' . config('app.name') . ' Study'))
             ->greeting("Greetings " . $notifiable->participant['first_name'] . "!");
 
+
+
         $mailMessage
             ->line('You are invited to join the following study:')
             ->line("Project title: " . $project['project_title'])

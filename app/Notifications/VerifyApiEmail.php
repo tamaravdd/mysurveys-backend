@@ -35,10 +35,18 @@ class VerifyApiEmail extends VerifyEmailBase
         }
         $salutation .= ' as a ' . $role . ' on the ' . config('app.name') . ' platform.  ';
 
+
         $mailMessage = new MailMessage();
         $mailMessage
-            ->subject(Lang::get($subjectIntro . ' Verify Email Address'))
-            ->line(Lang::get($salutation));
+            ->subject(Lang::get($subjectIntro . ' Verify Email Address'));
+
+        if (isset($this->data['custom_message'])) {
+            $mailMessage
+                ->line($this->data['custom_message'])
+                ->line('');
+        }
+        $mailMessage->line(Lang::get($salutation));
+
         if (!$resend && !isset($this->data['qualificationForm'])) {
             $mailMessage
                 ->line('Your temporary password is on the next line, please change it after logging in.')
