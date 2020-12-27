@@ -134,7 +134,7 @@ class Project extends Model
      */
     public function getNumberFinishedAttribute()
     {
-        $participants = ProjectParticipant::where("projects_projectid", $this->id);
-        return $participants->sum('finished');
+        $participants = ProjectParticipant::where("projects_projectid", $this->id)->whereNotNull('finished')->get();
+        return count($participants);
     }
 }

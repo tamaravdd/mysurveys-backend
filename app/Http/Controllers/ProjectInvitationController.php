@@ -242,6 +242,11 @@ class ProjectInvitationController extends BaseController
         }
 
         $number_finished = $project->number_finished;
+        // echo 'compare';
+        // var_dump($project->desired_sample_size);
+        // var_dump($number_finished);
+        // echo $number_finished > $project->desired_sample_size;
+        // exit;
         if ($number_finished > $project->desired_sample_size) {
             $errors[] = "Sample size reached!";
         }
