@@ -114,7 +114,7 @@ class AuthController extends BaseController
                     'role' => $roleName,
                     'subrole' => $user->subrole,
                     'id' => $user->id,
-                    'is_seed' => $user->getsubrole(),
+                    'is_seed' => $user->subrole,
                     'friends' => $friends
                 ];
             } else {

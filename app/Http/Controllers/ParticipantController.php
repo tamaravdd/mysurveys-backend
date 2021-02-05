@@ -107,7 +107,6 @@ class ParticipantController extends BaseController
         //
         //handled elsewhere
     }
-
     /**
      * Display the specified Participant.
      *
@@ -126,6 +125,7 @@ class ParticipantController extends BaseController
     public function show_profile()
     {
         $user = Auth::user();
+
         $profile = $this->retrieve_profile($user->id);
         return $this->sendResponse($profile, 'Profile retrieved');
     }
@@ -148,7 +148,7 @@ class ParticipantController extends BaseController
         $ua = array_merge($u->toArray(), $u->participant ? $u->participant->toArray() : []);
         //        rearrange data structure
         unset($ua['participant']);
-        $ua['subrole'] = $u->getsubrole();
+        $ua['subrole'] = $u->subrole;
         $ua['role'] = $u->getRoleNames()[0];
         return $ua;
     }
