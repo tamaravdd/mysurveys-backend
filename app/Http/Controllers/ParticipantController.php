@@ -64,8 +64,11 @@ class ParticipantController extends BaseController
                 $query->where("seed_id", NULL);
             }
             if ($eligible_peers) {
-                $query->whereHas("friends");
-                $query->where("seed_id", "!=", NULL);
+                // echo 'eligible peers';
+                // $query->whereHas("friends");
+                $query->where("paypal_id_status", "=", "Ok");
+
+                $query->whereNotNull("seed_id");
             }
         })->get();
 
