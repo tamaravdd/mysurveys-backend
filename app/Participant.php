@@ -71,7 +71,6 @@ class Participant extends Model
     public static function getFriends($id)
     {
         $f = Participant::where("seed_id", $id)->get();
-        return $f;
     }
 
     /**
@@ -102,7 +101,9 @@ class Participant extends Model
 
     public function friends()
     {
-        return $this->hasMany('App\Participant', 'seed_id', 'user_id');
+        $f = $this->hasMany('App\Participant', 'seed_id', 'user_id');
+        $f->load("user");
+        return $f;
     }
 
     public function eligible_seed()

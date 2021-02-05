@@ -105,6 +105,7 @@ class AuthController extends BaseController
                 $p = Participant::where("user_id", $user->id)->first();
                 //                $friends = $p && $p->friends ? $p->friends : [];
                 $friends = $p->friends;
+                $friends->load("user");
 
                 $json = [
                     'access_token' => $token,
