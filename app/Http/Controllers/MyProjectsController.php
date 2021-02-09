@@ -54,7 +54,7 @@ class MyProjectsController extends BaseController
         }])->where("participants_userid", $user_id)->get();
 
         $rA = [];
-        //        only if the projectparticipant item has a compliant project
+
         foreach ($pp as $p) {
             if ($p->project) {
                 $pp = $p->project;
@@ -121,9 +121,6 @@ class MyProjectsController extends BaseController
      */
     public function makeProjectLink($pp, $p)
     {
-        // $p = (object)$p;
-        // $pp = (object)$pp;
-
 
         $safe_id = $pp->safeid;
         $refcode = $pp->refcode;
@@ -145,41 +142,7 @@ class MyProjectsController extends BaseController
         if (isset($param3)) {
             $linkparams['ses_password'] = urlencode($param3);
         }
-
         $link = $p['link'] . '?' . http_build_query($linkparams, '', '&');
-
-
-
-        // if ($p->link_method == 'LoginInfo') {
-        //     $linkparams['id'] = $safe_id;
-        //     $linkparams['studyid'] = $safe_id;
-        //     $linkparams['studyid'] = $refcode;
-        //     if (isset($param1)) {
-        //         $linkparams['param1'] = urlencode($param1);
-        //     }
-        //     if (isset($param2)) {
-        //         $linkparams['param2'] = urlencode($param2);
-        //     }
-        //     $link = $p->link . '?' . http_build_query($linkparams, '', '&');
-        // } else if ($p->link_method == 'Unipark') {
-        //     $linkparams['id'] = $safe_id;
-        //     $param3 = $safe_id;
-        //     $linkparams['a'] = $safe_id;
-        //     $linkparams['b'] = $refcode;
-        //     if (isset($param1)) {
-        //         $linkparams['c'] = urlencode($param1);
-        //     }
-
-        //     if (isset($param2)) {
-        //         $linkparams['d'] = urlencode($param2);
-        //     }
-        //     if (isset($param3)) {
-        //         $linkparams['ses_password'] = urlencode($param3);
-        //     }
-        //     $link = $p['link'] . '?' . http_build_query($linkparams, '', '&');
-        // } else {
-        //     $link = $p['link'];
-        // }
         return $link;
     }
 }
