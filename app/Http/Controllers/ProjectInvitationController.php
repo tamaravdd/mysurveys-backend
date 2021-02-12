@@ -138,7 +138,7 @@ class ProjectInvitationController extends BaseController
                 $user_actual = User::find($invitee_participant->participants_userid);
                 $user_actual->sendInvitationNotification($data);
                 $count = $count + 1;
-                $this->logger('info', "Invitation sent to participant", ["user" => $user_actual, "project_id" => $project_id]);
+                $this->logger('info', "Invitation sent to participant " . $user_actual->email, ["user" => $user_actual, "project_id" => $project_id]);
 
                 $slData = [
                     "projects_projectid" => $project_id,

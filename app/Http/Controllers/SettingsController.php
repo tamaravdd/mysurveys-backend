@@ -32,13 +32,15 @@ class SettingsController extends BaseController
      */
     public function backup(Request $request)
     {
+        $this->logger('info', $request->user()->email . ' Requested a database backup', $request->user()->toArray());
 
         Artisan::call("backup:run");
         $s = Settings::first();
         $s->adminmessage = "Database backed up on " . date("Y-m-d:H:i:s");
-        $this->logger('info', $request->user()->email . ' Requested a database backup', $request->user()->toArray());
+        $this->logger('info', $request->user()->email . ' Database backup processed', $request->user()->toArray());
+
         $s->save();
-        return $this->sendResponse("System Backed up at " . date("Y-m-d"), 'Settings created successfully.');
+        return $this->sendResponse("Request processed.  Check system email " . date("Y-m-d"), 'Settings created successfully.');
     }
 
     /**

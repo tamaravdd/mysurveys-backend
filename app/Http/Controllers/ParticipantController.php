@@ -118,6 +118,7 @@ class ParticipantController extends BaseController
      */
     public function show($id)
     {
+
         $user = $this->retrieve_profile($id);
         return $this->sendResponse($user, 'User retrieved');
     }
@@ -128,7 +129,6 @@ class ParticipantController extends BaseController
     public function show_profile()
     {
         $user = Auth::user();
-
         $profile = $this->retrieve_profile($user->id);
         return $this->sendResponse($profile, 'Profile retrieved');
     }
@@ -139,17 +139,16 @@ class ParticipantController extends BaseController
      */
     private function retrieve_profile($id)
     {
-        $p = \App\Participant::where("user_id", $id)->first();
-        $p->load('user');
-        $u = User::with('participant')->where('id', $p->user_id)->first();
+
+        $u = User::with('participant')->where('id', $id)->first();
         $u->participant->load('friends');
         $u->participant->load('seed');
         if ($u->participant->seed) {
             $u->participant->seed->load('user');
         }
         $u->participant->friends->load('user');
+
         $ua = array_merge($u->toArray(), $u->participant ? $u->participant->toArray() : []);
-        //        rearrange data structure
         unset($ua['participant']);
         $ua['subrole'] = $u->subrole;
         $ua['role'] = $u->getRoleNames()[0];

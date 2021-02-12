@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController;
 use App\User;
 
+use Illuminate\Support\Facades\Auth;
+
 require_once('utility/simple_html_dom.php');
 
 class PaypalController extends BaseController
@@ -59,6 +61,8 @@ class PaypalController extends BaseController
         $currentuser->participant->paypal_id_status = 'Ok';
 
         $currentuser->participant->save();
+        $this->logger('info', Auth::user()->email . ' updated PayPal ID ', [$request['paypalme']]);
+
         return $this->sendResponse($checkPayPalMe, 'Paypal info updated', 200);
     }
 

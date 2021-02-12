@@ -58,7 +58,6 @@ Route::resource('users', 'UserController');
 Route::resource('projectparticipant', 'ProjectParticipantController');
 Route::resource('participants', 'ParticipantController');
 
-Route::get('profile', 'ParticipantController@show_profile')->middleware('verified');
 Route::post('quota', 'AdminController@quota');
 Route::post('create_selection', 'ProjectParticipantController@create_selection');
 Route::post('get_selection', 'ProjectParticipantController@get_selection');
@@ -106,6 +105,8 @@ Route::group(['middleware' => ['role:participant', 'verified']], function () {
 
 //all
 Route::group(['middleware' => ['role:administrator|researcher|participant']], function () {
+    Route::get('profile', 'ParticipantController@show_profile');
+
     Route::resource('projects', 'ProjectController');
     Route::get('motd', 'ProfileController@motd');
 });
