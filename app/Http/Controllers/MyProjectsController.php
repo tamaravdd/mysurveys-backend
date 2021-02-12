@@ -121,28 +121,29 @@ class MyProjectsController extends BaseController
      */
     public function makeProjectLink($pp, $p)
     {
-
-        $safe_id = $pp->safeid;
+        $safe_id = $p->projectParticipants[0]->safeid;
         $refcode = $pp->refcode;
-        $param1 = $pp->userparam1;
+        $param1 = $pp->safeid;
         $param2 = $pp->userparam2;
 
         $linkparams = [];
-        $linkparams['id'] = $safe_id;
-        $param3 = $safe_id;
         $linkparams['a'] = $safe_id;
-        $linkparams['b'] = $refcode;
-        if (isset($param1)) {
-            $linkparams['c'] = urlencode($param1);
-        }
+        $linkparams['b'] = "";
 
-        if (isset($param2)) {
-            $linkparams['d'] = urlencode($param2);
-        }
-        if (isset($param3)) {
-            $linkparams['ses_password'] = urlencode($param3);
-        }
-        $link = $p['link'] . '?' . http_build_query($linkparams, '', '&');
+        // $param3 = $safe_id;
+        // $linkparams['code'] = $safe_id;
+        // $linkparams['b'] = $refcode;
+        // if (isset($param1)) {
+        //     $linkparams['c'] = urlencode($param1);
+        // }
+
+        // if (isset($param2)) {
+        //     $linkparams['d'] = urlencode($param2);
+        // }
+        // if (isset($param3)) {
+        //     $linkparams['ses_password'] = urlencode($param3);
+        // }
+        $link = $p['link'] . '?' . http_build_query($linkparams);
         return $link;
     }
 }
