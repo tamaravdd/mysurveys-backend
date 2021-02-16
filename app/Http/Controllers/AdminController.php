@@ -34,8 +34,6 @@ class AdminController extends BaseController
         }
         $logdata = $validator->valid();
         $logdata['type'] = 'quota';
-
-
         $project = Project::findOrFail($request['project_id']);
         $project->quota = $request['amount'];
         $project->save();
@@ -73,7 +71,6 @@ class AdminController extends BaseController
                     ]
                 );
                 $this->logger("info", 'User register [researcher]:  .' . $request->all()['email'], $validator->valid());
-
                 $newuser->sendApiEmailVerificationNotification($data);
                 return $this->sendResponse($data, 200);
                 return response()->json(['user' => $newuser], 201);

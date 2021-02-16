@@ -20,11 +20,8 @@ class ParticipantController extends BaseController
      */
     public function index()
     {
-        //
         $participants = Participant::where("id", ">", "3")->get();
         return new ProjectParticipants(ProjectParticipant::where("projects_projectid", $request['project_id'])->orderBy($request['sort'], $request['order'])->paginate());
-
-        return $this->sendResponse(new ParticipantsResource($participants), 'Participants retrieved successfully.');
     }
 
     /**
@@ -40,7 +37,6 @@ class ParticipantController extends BaseController
         if ($validator->fails()) {
             return $this->sendError('Missing project ID');
         }
-
 
         $forms = $validator->valid()['categoryForm'];
 
@@ -64,10 +60,7 @@ class ParticipantController extends BaseController
                 $query->where("seed_id", NULL);
             }
             if ($eligible_peers) {
-                // echo 'eligible peers';
-                // $query->whereHas("friends");
                 $query->where("paypal_id_status", "=", "Ok");
-
                 $query->whereNotNull("seed_id");
             }
         })->get();

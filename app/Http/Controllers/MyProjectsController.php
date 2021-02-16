@@ -54,7 +54,6 @@ class MyProjectsController extends BaseController
         }])->where("participants_userid", $user_id)->get();
 
         $rA = [];
-
         foreach ($pp as $p) {
             if ($p->project) {
                 $pp = $p->project;
@@ -102,19 +101,16 @@ class MyProjectsController extends BaseController
         $pp = $p->projectParticipants[0];
         //build project link based on user values
         $link = $this->makeProjectLink($pp, $p);
-        // echo $link;
         $pp_actual = ProjectParticipant::where("projects_projectid", $project_id)->where("participants_userid", $user_id)->first();
 
         $pp_actual->started = date('Y-m-d');
-        // $pp_actual->started = null;
 
         $pp_actual->save();
         return $this->sendResponse(["user" => $pp_actual, "link" => $link], 'Project started', 200);
     }
 
     /**
-     * Helper - build project link
-     * TODO check if complexity necessary here re: reduced link types in use
+     * Helper - build project link    
      * @param type $pp
      * @param type $p
      * @return type
@@ -122,27 +118,9 @@ class MyProjectsController extends BaseController
     public function makeProjectLink($pp, $p)
     {
         $safe_id = $p->projectParticipants[0]->safeid;
-        $refcode = $pp->refcode;
-        $param1 = $pp->safeid;
-        $param2 = $pp->userparam2;
-
         $linkparams = [];
         $linkparams['a'] = $safe_id;
         $linkparams['b'] = "";
-
-        // $param3 = $safe_id;
-        // $linkparams['code'] = $safe_id;
-        // $linkparams['b'] = $refcode;
-        // if (isset($param1)) {
-        //     $linkparams['c'] = urlencode($param1);
-        // }
-
-        // if (isset($param2)) {
-        //     $linkparams['d'] = urlencode($param2);
-        // }
-        // if (isset($param3)) {
-        //     $linkparams['ses_password'] = urlencode($param3);
-        // }
         $link = $p['link'] . '?' . http_build_query($linkparams);
         return $link;
     }

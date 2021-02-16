@@ -95,7 +95,7 @@ class ProjectParticipantController extends BaseController
         }
 
         if (isset($request->all()['all'])) {
-            $Project = Project::find($request['project_id']);
+            // $Project = Project::find($request['project_id']);
             $pp = ProjectParticipant::with('participant')->where("projects_projectid", $request['project_id'])->get();
 
             $ra = [];
@@ -122,7 +122,7 @@ class ProjectParticipantController extends BaseController
      */
     public function create_selection(Request $request)
     {
-        //
+
         $validator = Validator::make($request->all(), [
             'project_id' => 'required',
         ]);
@@ -136,8 +136,6 @@ class ProjectParticipantController extends BaseController
             return $this->sendError('Please complete the form');
         }
 
-        $existing = ProjectParticipant::where("projects_projectid", $request['project_id'])->delete();
-        //dele
         foreach ($request['users'] as $user) {
 
             $data = [

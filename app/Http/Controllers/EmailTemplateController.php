@@ -21,8 +21,7 @@ class EmailTemplateController extends BaseController
      */
     public function email_templates_with_project(Request $request)
     {
-        //
-        // var_dump($request);
+
         $project_id =  $request->get('project_id');
         $templates = EmailTemplate::all();
         foreach ($templates as $template) {
@@ -73,12 +72,7 @@ class EmailTemplateController extends BaseController
         } else {
             $replacements[] = array('*username*', '<no user selected>');
         }
-
-        // TODO user login link 
-        // $replacements[] = array('*loginlink*', selfURLbase() . 'loginuser.php?loginas=' . $emailaddress);
-        // TODO another contact address 
         $replacements[] = array('*contactaddress*',  $project_data->expected_payout);
-
         foreach ($replacements as $rep) {
             $subject = str_replace($rep[0], $rep[1], $subject);
             $body = str_replace($rep[0], $rep[1], $body);
@@ -114,9 +108,6 @@ class EmailTemplateController extends BaseController
         $template = EmailTemplate::create($input);
         return $this->sendResponse($template, 'Template created successfully.');
     }
-
-
-
 
 
     /**

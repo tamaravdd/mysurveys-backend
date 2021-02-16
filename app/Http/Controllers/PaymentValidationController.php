@@ -27,8 +27,6 @@ class PaymentValidationController extends BaseController
                 $confirmed = date("Y-m-d H:i:s");
                 $pp->payment_confirmed = $confirmed;
             }
-
-
             $dt = date("Y-m-d H:i:s");
             $pp->validated = $dt;
             $pp->save();

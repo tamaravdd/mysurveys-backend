@@ -4,14 +4,17 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 
-class MotdTest extends TestCase {
+class MotdTest extends TestCase
+{
 
     /**
      * setMotd
+     * deprecated
      * @group 2
      * @return void
      */
-    public function testMotd() {
+    public function testMotd()
+    {
 
         /**
          * Participant MOTD
@@ -30,5 +33,4 @@ class MotdTest extends TestCase {
 
         $selection_response_r->assertStatus(200);
     }
-
 }

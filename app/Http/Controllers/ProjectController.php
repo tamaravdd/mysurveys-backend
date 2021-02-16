@@ -23,7 +23,7 @@ class ProjectController extends BaseController
     {
 
         $id = $request->user()->id;
-        //        TODO filter by user id
+        //        TODO filter by user id, future version
         $projects = Project::all();
         return $this->sendResponse(ProjectResource::collection($projects), 'Projects retrieved successfully.');
     }
