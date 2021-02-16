@@ -6,6 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+
+/**
+ * Public routes
+ * TODO / distinguish verified/nonverified?
+ *
+ */
+Route::get('refresh', 'AuthController@refresh')->name('api.jwt.refresh');
+Route::post('validate_paypal', 'PaypalController@validate_paypal');
+Route::get('test', function (Request $request) {
+    return 'response';
+});
+
 /**
  * Registration and Authentication
  *
@@ -31,29 +43,6 @@ Route::group([
     Route::post('change_email_verify', 'EmailChangeController@change_email_verify');
     Route::post('change_password_request', 'PasswordChangeController@change_password_request');
 });
-//working
-//working
-/**
- * Public routes
- * TODO / distinguish verified/nonverified?
- *
- */
-//TODO auth
-Route::get('omni', 'OmniController@omni');
-Route::get('logs', 'LogController@logs');
-Route::get('refresh', 'AuthController@refresh')->name('api.jwt.refresh');
-Route::post('validate_paypal', 'PaypalController@validate_paypal');
-Route::get('test', function (Request $request) {
-    return 'response';
-});
-Route::resource('users', 'UserController');
-Route::resource('projectparticipant', 'ProjectParticipantController');
-Route::resource('participants', 'ParticipantController');
-
-Route::post('quota', 'AdminController@quota');
-Route::post('create_selection', 'ProjectParticipantController@create_selection');
-Route::post('get_selection', 'ProjectParticipantController@get_selection');
-Route::post('get_advanced_selection', 'ParticipantController@get_advanced_selection');
 /**
  * ONLY Administrator
  *
@@ -62,6 +51,8 @@ Route::group(['middleware' => ['role:administrator'],    'middleware' => 'api'],
     Route::post('invite_researcher', 'AdminController@invite_researcher');
     Route::resource('settings', 'SettingsController');
     Route::post('backup', 'SettingsController@backup');
+    Route::get('logs', 'LogController@logs');
+    Route::post('quota', 'AdminController@quota');
 });
 /**
  * Administrators, Researcher
@@ -71,14 +62,22 @@ Route::group(['middleware' => ['role:administrator'],    'middleware' => 'api'],
 Route::group(['middleware' => ['role:administrator|researcher']], function () {
     Route::resource('email_templates', 'EmailTemplateController');
     Route::post('email_templates_with_project', 'EmailTemplateController@email_templates_with_project');
-
+    Route::get('omni', 'OmniController@omni');
+    Route::resource('projectparticipant', 'ProjectParticipantController');
+    Route::resource('users', 'UserController');
     Route::post('update_participant_validation', 'PaymentValidationController@update_participant_validation');
     Route::resource('projects', 'ProjectController');
     Route::post('send_project_reminders', 'ProjectInvitationController@send_project_reminders');
     Route::post('send_project_invitations', 'ProjectInvitationController@send_project_invitations');
     Route::post('send_custom_message', 'ProjectInvitationController@send_custom_message');
     Route::get('project_participants', 'ProjectParticipantController@project_participants');
+    Route::post('create_selection', 'ProjectParticipantController@create_selection');
+    Route::post('get_selection', 'ProjectParticipantController@get_selection');
+    Route::post('get_advanced_selection', 'ParticipantController@get_advanced_selection');
+    Route::resource('participants', 'ParticipantController');
+    Route::resource('projects', 'ProjectController');
 });
+
 /**
  * Verified Participant
  *
@@ -86,19 +85,13 @@ Route::group(['middleware' => ['role:administrator|researcher']], function () {
  */
 Route::group(['middleware' => ['role:participant', 'verified']], function () {
     Route::post('invite_friend', 'RegisterController@invite_participant');
-
     Route::get('my_projects', 'MyProjectsController@my_projects');
     Route::post('start_project', 'MyProjectsController@start_project');
     Route::post('verify_project_code', 'MyProjectsController@verify_project_code');
 });
-
-
-
-//all
+//all roles
 Route::group(['middleware' => ['role:administrator|researcher|participant']], function () {
     Route::get('profile', 'ParticipantController@show_profile');
-
-    Route::resource('projects', 'ProjectController');
     Route::get('motd', 'ProfileController@motd');
 });
 //verified all
