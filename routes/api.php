@@ -85,7 +85,6 @@ Route::group(['middleware' => ['role:administrator|researcher']], function () {
  */
 Route::group(['middleware' => ['role:participant', 'verified']], function () {
     Route::post('invite_friend', 'RegisterController@invite_participant');
-    Route::get('my_projects', 'MyProjectsController@my_projects');
     Route::post('start_project', 'MyProjectsController@start_project');
     Route::post('verify_project_code', 'MyProjectsController@verify_project_code');
 });
@@ -93,6 +92,7 @@ Route::group(['middleware' => ['role:participant', 'verified']], function () {
 Route::group(['middleware' => ['role:administrator|researcher|participant']], function () {
     Route::get('profile', 'ParticipantController@show_profile');
     Route::get('motd', 'ProfileController@motd');
+    Route::get('my_projects', 'MyProjectsController@my_projects');
 });
 //verified all
 Route::group(['middleware' => ['role:administrator|researcher|participant', 'verified']], function () {

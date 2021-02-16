@@ -269,6 +269,7 @@ class RegisterController extends BaseController
             //Delete the token
             $d = DB::table('password_resets')->where('email', $user->email)
                 ->delete();
+            $this->logger("info", 'User succeeded password reset ' . $user->email, [$user->email]);
 
             if ($token = auth()->login($user)) {
                 $aCtrl = new AuthController();

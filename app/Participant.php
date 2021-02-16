@@ -82,10 +82,10 @@ class Participant extends Model
         //        TODO check verified
         return $this->friends();
         $f = $this->hasMany('App\Participant', 'seed_id');
-        $has_verified_friend = false;
+        $has_verified_friend = 0;
         foreach ($f as $friend) {
             if ($friend->paypal_id_status == 'Ok') {
-                $has_verified_friend = true;
+                $has_verified_friend++;
             }
         }
         return $has_verified_friend;
@@ -132,7 +132,9 @@ class Participant extends Model
 
     public function getVerifiedFriendsCountAttribute()
     {
-        $f = Collect($this->friends())->where("paypal_id_status", "Ok");
+        // $f = Collect($this->friends())->where("paypal_id_status", "Ok");
+        $f = Collect($this->friends()->get());
+
 
         return $f->count();
     }
