@@ -41,7 +41,6 @@ Route::group([
 //TODO auth
 Route::get('omni', 'OmniController@omni');
 Route::get('logs', 'LogController@logs');
-Route::post('log', 'LogController@log');
 Route::get('refresh', 'AuthController@refresh')->name('api.jwt.refresh');
 Route::post('validate_paypal', 'PaypalController@validate_paypal');
 Route::get('test', function (Request $request) {

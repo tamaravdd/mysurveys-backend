@@ -11,40 +11,16 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends BaseController
 {
     /**
-     * Display a listing of the User.
-     * TODO update permissions
+     * Display a listing of the User.   
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-
-
         if (Auth::user()->role !== 'administrator') {
             $this->sendError("Only administrators can show all users");
         }
         $users = User::all();
         return response()->json(['users' => $users], 200);
-    }
-
-    /**
-     * Show the form for creating a new User.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created User in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -57,17 +33,6 @@ class UserController extends BaseController
     {
         $user->load("participant");
         return $user;
-    }
-
-    /**
-     * Show the form for editing the specified User.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
     }
 
     /**

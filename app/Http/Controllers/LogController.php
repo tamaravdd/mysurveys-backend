@@ -21,7 +21,6 @@ class LogController extends BaseController
         $order = $request->all()['sortOrder'] ? $request->all()['sortOrder'] : 'desc';
         $filter = $request->all()['filter'] ? $request->all()['filter'] : null;
         $pageSize = $request->all()['pageSize'] ? $request->all()['pageSize'] : 30;
-
         if ($filter) {
             $l = Log::orderBy($order_by, $order)
                 ->where('message', 'LIKE', '%' . $filter . '%')
