@@ -19,7 +19,6 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('register', 'RegisterController@register');
     Route::post('user_submit_qualification_form', 'RegisterController@user_submit_qualification_form');
-
     Route::post('resend_verification_email', 'RegisterController@resend_verification_email');
     Route::post('check_change_password_code', 'RegisterController@check_change_password_code');
     Route::post('check_verification_code', 'RegisterController@check_verification_code');
@@ -32,20 +31,14 @@ Route::group([
     Route::post('change_email_verify', 'EmailChangeController@change_email_verify');
     Route::post('change_password_request', 'PasswordChangeController@change_password_request');
 });
-
 //working
 //working
-
-
-
 /**
  * Public routes
  * TODO / distinguish verified/nonverified?
  *
  */
 //TODO auth
-
-Route::post('user_projects', 'ProjectParticipantController@user_projects');
 Route::get('omni', 'OmniController@omni');
 Route::get('logs', 'LogController@logs');
 Route::post('log', 'LogController@log');
@@ -62,7 +55,6 @@ Route::post('quota', 'AdminController@quota');
 Route::post('create_selection', 'ProjectParticipantController@create_selection');
 Route::post('get_selection', 'ProjectParticipantController@get_selection');
 Route::post('get_advanced_selection', 'ParticipantController@get_advanced_selection');
-
 /**
  * ONLY Administrator
  *

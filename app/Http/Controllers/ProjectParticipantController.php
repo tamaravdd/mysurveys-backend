@@ -12,11 +12,6 @@ use App\Http\Resources\ProjectParticipants;
 class ProjectParticipantController extends BaseController
 {
 
-    public function user_projects(Request $request)
-    {
-
-        return 'projects';
-    }
 
     /**
      * Display a listing of the Project Participants.
