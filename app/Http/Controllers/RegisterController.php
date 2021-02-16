@@ -146,7 +146,7 @@ class RegisterController extends BaseController
             'qualificationForm' => 'required|array'
         ]);
         $user = Auth::user();
-        if ($validator->fails() || !$user) {
+        if ($validator->fails()) {
             $errors = [];
             foreach ($validator->messages()->toArray() as $key => $message) {
                 $errors[] = $message[0];

@@ -33,7 +33,6 @@ class AuthController extends BaseController
     {
         $credentials = $request->only('email', 'password');
         if ($token = auth()->attempt($credentials)) {
-
             $this->logger('info', 'User login: ' . $credentials['email'], $credentials);
             $user = User::with('participant')->where("email", $credentials['email'])->first();
             $banned = $user->banned;
@@ -42,7 +41,6 @@ class AuthController extends BaseController
             }
             return $this->respondWithToken($token, $user);
         }
-
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
