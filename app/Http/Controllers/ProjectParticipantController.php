@@ -136,6 +136,8 @@ class ProjectParticipantController extends BaseController
             return $this->sendError('Please complete the form');
         }
 
+        $new = 0;
+        ProjectParticipant::where("projects_projectid", $request['project_id'])->delete();
         foreach ($request['users'] as $user) {
 
             $data = [
@@ -145,10 +147,20 @@ class ProjectParticipantController extends BaseController
             ];
 
             $p = new ProjectParticipant();
-            $p->fill($data);
-            $p->save();
+
+            $exists = ProjectParticipant::where("projects_projectid", $request['project_id'])
+                ->where("participants_userid", $data['participants_userid'])->first();
+
+            // var_dump($exists);
+            // exit;
+
+            if (!$exists) {
+                $p->fill($data);
+                $p->save();
+                $new++;
+            }
         }
-        return $this->sendResponse('Added ' . count($request['users']) . ' Participants', 201);
+        return $this->sendResponse('Added ' . $new . ' Participants; ', 201);
     }
 
     private function getName($n)
