@@ -67,6 +67,7 @@ class ProjectInvitation extends Notification implements ShouldQueue
         $project = $this->data;
         $participant = $project['participant'];
 
+
         $projController = new MyProjectsController();
         $link = $projController->makeProjectLink($participant, $project);
         $mailMessage = new MailMessage();
