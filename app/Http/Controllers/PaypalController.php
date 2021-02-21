@@ -23,7 +23,7 @@ class PaypalController extends BaseController
     {
 
         $validator = Validator::make($request->all(), [
-            "email" => "required|email",
+            // "email" => "required|email",
             "paypalme" => "required"
         ]);
         if ($validator->fails()) {
@@ -32,13 +32,14 @@ class PaypalController extends BaseController
 
         $currentuser = Auth()->user();
         $currentuser->load('participant');
+        $email = $currentuser->email;
 
 
-        $emailMatch = User::where("email", $validator->valid()['email'])->first();
+        $emailMatch = User::where("email", $email)->first();
         if ($emailMatch && $emailMatch->id !== $currentuser->id) {
-            return $this->sendError('Attempting to use an email address that is in use but not yours');
+            return $this->sendError('Email validation error');
         }
-        $idExists = Participant::where("paypal_id", $request['email'])->first();
+        $idExists = Participant::where("paypal_id", $email)->first();
         $meExists = Participant::where("paypal_me", $request['paypalme'])->first();
 
         if ($idExists && $currentuser->participant->paypal_id !== $idExists->paypal_id) {
@@ -56,7 +57,7 @@ class PaypalController extends BaseController
         }
 
         $currentuser->load('participant');
-        $currentuser->participant->paypal_id = $request['email'];
+        $currentuser->participant->paypal_id = $email;
         $currentuser->participant->paypal_me = $request['paypalme'];
         $currentuser->participant->paypal_id_status = 'Ok';
 
