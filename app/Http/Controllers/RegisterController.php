@@ -46,6 +46,8 @@ class RegisterController extends BaseController
             'qualificationForm' => 'array'
         ]);
         if ($validator->fails()) {
+            return response()->json($validator->messages()->toArray(), 409);
+
             $errors = [];
             foreach ($validator->messages()->toArray() as $key => $message) {
                 $errors[] = $message[0];
