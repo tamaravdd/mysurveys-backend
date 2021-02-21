@@ -49,11 +49,20 @@ class MyProjectsController extends BaseController
     {
 
         $user_id = $request->user()->id;
+        $user = $request->user();
         $pp = ProjectParticipant::with(['project' => function ($query) {
             $query->where("state", "Started")->where("start_state", "Open");
-        }])->where("participants_userid", $user_id)->get();
+        }], 'user')->where("participants_userid", $user_id)->get();
 
         $rA = [];
+
+        if ($user->participant->paypal_id_status !== 'Ok') {
+            return [];
+        }
+        if ($user->email_verified_at == NULL) {
+            return [];
+        }
+
         foreach ($pp as $p) {
             if ($p->project) {
                 $pp = $p->project;

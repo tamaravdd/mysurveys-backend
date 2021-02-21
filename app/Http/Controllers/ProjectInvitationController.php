@@ -78,7 +78,7 @@ class ProjectInvitationController extends BaseController
     {
 
         //default as DEV for no actual sending
-        $DEV = 'DEVELOPMENT';
+
 
         $validator = Validator::make($request->all(), [
             'ids' => 'required',
@@ -101,9 +101,7 @@ class ProjectInvitationController extends BaseController
         $users_actual = User::with('participant')->whereIn("id", $user_ids)->get();
         $invitation_errors = $this->check_if_invitation_is_ok($project_id, $user_ids);
 
-        if ($DEV === 'DEVELOPMENT') {
-            return $this->sendResponse(["ERRORS" => $invitation_errors, "PREVIEW" => $users_actual], 200);
-        }
+
 
         if (!empty($invitation_errors)) {
             return $this->sendResponse(implode(",", $invitation_errors), $invitation_errors, 400);
