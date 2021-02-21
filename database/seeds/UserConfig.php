@@ -139,7 +139,7 @@ class UserConfig extends Seeder
             "start_state" => "Open",
             // "link_method" => 'Direct',
             "link" => "https://ww2.unipark.de/uc/scitest/?a=&b=",
-            "responsible_person" => "researcher@mysurveys.santafe.edu",
+            "responsible_person" => "researcher@support.santafe.edu",
             "description" => "Sample project description",
             "defaultend" => "2020-12-31 00:00:00",
             "defaultstart" => "2020-12-01 00:00:00",
