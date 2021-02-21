@@ -56,8 +56,7 @@ class VerifyApiEmail extends VerifyEmailBase
         }
         $mailMessage
             ->line('Please click the button below to verify your email address.')
-            ->action(Lang::get(' Please Verify Email Address'), $verificationUrl)
-            ->line(Lang::get('If you are not expecting an invitation, no further action is required.'))
+            ->action(Lang::get(' Please Verify Email Address'), $verificationUrl))
             ->line('')
             ->line(new HtmlString('<bold>For additional project support, contact support@mysurveys.santafe.edu</bold>'));
 
