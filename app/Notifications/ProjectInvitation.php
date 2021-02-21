@@ -10,6 +10,8 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MyProjectsController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\HtmlString;
+
 
 use App\Log;
 use App\User;
@@ -85,9 +87,12 @@ class ProjectInvitation extends Notification implements ShouldQueue
             ->line("Project description: " . $project['description'])
             ->line("The payment for participation is $" . $project['max_payout'] . " USD.  The study will be open until " . $project['defaultend'] . " or until enough people participate.")
             ->line("If you have any questions, please contact " . $project['responsible_person'])
-            ->line('')
+
             ->line('Please click on the link below to start the project.')
             ->action('Start Project', $link)
+            ->line('')
+            ->line(new HtmlString('<bold>For additional project support, contact support@mysurveys.santafe.edu</bold>'))
+            ->line('')
             // ->action(Lang::get($this->projectInvitationUrl()), $this->projectInvitationUrl())
         ;
 
