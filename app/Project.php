@@ -24,8 +24,8 @@ class Project extends Model
     {
         return [
             'project_title' => 'required|string',
-            'defaultstart' => 'required|date',
-            'defaultend' => 'required|date|after_or_equal:defaultstart',
+            // 'defaultstart' => 'required|date',
+            // 'defaultend' => 'required|date|after_or_equal:defaultstart',
         ];
     }
 
