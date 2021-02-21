@@ -49,6 +49,7 @@ class RegisterController extends BaseController
             return response()->json($validator->messages()->toArray(), 409);
         }
         $user_info = $validator->valid();
+
         if ($newuser = $this->create_user($user_info, 'participant')) {
             $this->create_participant($newuser->id);
             if (isset($user_info['qualificationForm'])) {
@@ -160,8 +161,9 @@ class RegisterController extends BaseController
             "qualification_vac" => $formData['vac'],
             "qualification_us" => $formData['us'],
             "qualification_friends" => $formData['friends'],
-        );
+            "share_data" => $formData['share_data'],
 
+        );
         $participant = Participant::where("user_id", $user->id)->first();
 
         $participant->fill($fda);

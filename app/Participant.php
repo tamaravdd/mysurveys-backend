@@ -14,6 +14,7 @@ class Participant extends Model
      */
     protected $fillable = [
         'user_id',
+        'share_data',
         'is_seed', 'first_name', 'family_name', 'birthyear', "qualification_us", "qualification_parents",
         "qualification_friends", "qualification_gm", "qualification_vac",
         'street', 'zip', 'city', 'seed_id', 'paypal_id', 'paypal_id_status', 'paypal_me'
@@ -61,6 +62,8 @@ class Participant extends Model
         $p->qualification_gm = $form['gm'];
         $p->qualification_vac = $form['vac'];
         $p->qualification_us = $form['us'] == true;
+        $p->share_data = $form['share_data'] == true;
+
         $p->save();
         return $p;
     }
