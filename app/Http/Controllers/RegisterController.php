@@ -47,12 +47,6 @@ class RegisterController extends BaseController
         ]);
         if ($validator->fails()) {
             return response()->json($validator->messages()->toArray(), 409);
-
-            $errors = [];
-            foreach ($validator->messages()->toArray() as $key => $message) {
-                $errors[] = $message[0];
-            }
-            return response()->json($errors, 400);
         }
         $user_info = $validator->valid();
         if ($newuser = $this->create_user($user_info, 'participant')) {
