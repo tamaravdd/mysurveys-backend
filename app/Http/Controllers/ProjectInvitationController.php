@@ -205,18 +205,19 @@ class ProjectInvitationController extends BaseController
             $errors[] = $project->default_end_date_elapsed;
         }
 
-        if (!$project->exp_payout) {
-            $errors[] = 'The project has no expected payout';
-        }
+        // disabling per feedback 
+        // if (!$project->exp_payout) {
+        //     $errors[] = 'The project has no expected payout';
+        // }
 
-        if (!$project->max_payout || $project->max_payout == 0) {
-            $errors[] =  'No max payout is set for the project';
-        }
+        // if (!$project->max_payout || $project->max_payout == 0) {
+        //     $errors[] =  'No max payout is set for the project';
+        // }
 
-        $total_max_payout = $project->get_number_of_participants() * $project->max_payout;
-        if ($total_max_payout > $project->quota) {
-            $errors[] =  'The total max payout (participants X max_payout) for the project is greater than the project quota';
-        }
+        // $total_max_payout = $project->get_number_of_participants() * $project->max_payout;
+        // if ($total_max_payout > $project->quota) {
+        //     $errors[] =  'The total max payout (participants X max_payout) for the project is greater than the project quota';
+        // }
 
         if ($project->state !== 'Started') {
             $errors[] = 'Project state is ' . $project->state;
@@ -246,10 +247,10 @@ class ProjectInvitationController extends BaseController
             $errors[] = "Sample size reached!";
         }
 
-        $invitation_threshold = $project->proposed_invitations_exceed_desired_number($participants_actual);
-        if ($invitation_threshold) {
-            $errors[] = "The proposed number of invitations plus the number already invited exceeds the desired number for the project";
-        }
+        // $invitation_threshold = $project->proposed_invitations_exceed_desired_number($participants_actual);
+        // if ($invitation_threshold) {
+        //     $errors[] = "The proposed number of invitations plus the number already invited exceeds the desired number for the project";
+        // }
         return $errors;
     }
 
