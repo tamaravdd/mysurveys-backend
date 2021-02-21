@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Carbon;
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\HtmlString;
+
 
 class VerifyApiEmail extends VerifyEmailBase
 {
@@ -50,7 +52,7 @@ class VerifyApiEmail extends VerifyEmailBase
         if (!$resend && !isset($this->data['qualificationForm'])) {
             $mailMessage
                 ->line('Your temporary password is on the next line, please change it after logging in.')
-                ->line($this->data['password']);
+                ->line(new HtmlString('<strong>' . $this->data['password'] . '</strong>'));
         }
         $mailMessage
             ->line('Please click the button below to verify your email address.')
